@@ -12,7 +12,7 @@
     }
 
     body {
-      margin: 0px;
+      margin: 20px;
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
       font-size: 14px;
       line-height: 20px;
@@ -85,33 +85,37 @@
 	共计任务数：{{.total}}
     <table class="table table-striped table-hover table-bordered "  width="1200px">
           <thead>
-           <th style="text-align: center" width="150px">执行时间</th>
-           <!-- <th style="text-align: center" width="40px">环境</th> -->
-           <th style="text-align: center" width="200px">公司名称</th>
-           <th style="text-align: center" width="120px">纳税人识别号</th>
-           <th style="text-align: center" width="80px">登录结果</th>
+           <th style="text-align: center" width="210px">执行时间</th>
+           <!-- <th style="text-align: center" width="60px">环境</th> -->
+           <th style="text-align: center" width="300px">公司名称</th>
+           <th style="text-align: center" width="150px">纳税人识别号</th>
+           <th style="text-align: center" width="100px">登录结果</th>
            <!-- <th style="text-align: center" width="150px">登录描述</th> -->
-           <th style="text-align: center" width="60px">税种ID</th>
-           <th style="text-align: center" width="80px">申报期起</th>
-           <th style="text-align: center" width="80px">申报期止</th>
+           <th style="text-align: center" width="80px">税种ID</th>
+           <th style="text-align: center" width="90px">申报期起</th>
+           <th style="text-align: center" width="90px">申报期止</th>
            <th style="text-align: center" width="80px">任务类型</th>
            <th style="text-align: center" width="100px">任务结果</th>
-           <th style="text-align: center" width="80px">申报类型</th>
-           <th style="text-align: center" width="80px">执行机器</th>
+           <th style="text-align: center" width="80px">耗时/秒</th>
+           <th style="text-align: center" width="120px">执行机器</th>
+		   <th style="text-align: center" >备注</th>
          </thead>
 
          <tbody id="sortable">
          {{range .tasks}}
             <tr class="sort-item">
               <td style="text-align: center;width: 200px;"><span class="label label-default" >{{.Created}}</span></td>
-              <td style="width: 200px;"><span class="label label-default" >{{.CompanyName}}</span></td>
-              <td style="width: 200px;"><span class="label label-default" >{{.TaxpayerId}}</span></td>
-              <td style="width: 200px;"><span class="label label-default" >{{.LoginResult}}</span></td>
-              <td style="width: 200px;"><span class="label label-default" >{{.TableSetID}}</span></td>
-              <td style="width: 200px;"><span class="label label-default" >{{.Ssqs}}</span></td>
-              <td style="width: 200px;"><span class="label label-default" >{{.Ssqz}}</span></td>
-              <td style="width: 200px;"><span class="label label-default" >{{.Type}}</span></td>
-              <td style="width: 200px;"><span class="label label-default" >{{.TsResult}}</span></td>
+              <td style=""><span class="label label-default" >{{.CompanyName}}</span></td>
+              <td style=""><span class="label label-default" >{{.TaxpayerId}}</span></td>
+              <td style=""><span class="label label-default" >{{.LoginResult}}</span></td>
+              <td style=""><span class="label label-default" >{{.TableSetID}}</span></td>
+              <td style=""><span class="label label-default" >{{.Ssqs}}</span></td>
+              <td style=""><span class="label label-default" >{{.Ssqz}}</span></td>
+              <td style=""><span class="label label-default" >{{.Type}}</span></td>
+              <td style="text-align: center;width: 150px;" title="{{.TsDesc}}"><span class="label label-default" >{{.TsResult}}</span></td>
+              <td style=""><span class="label label-default" >{{.Time}}</span></td>
+              <td style=""><span class="label label-default" >{{.Mac}}</span></td>
+              <td style=""><span class="label label-default" ></span></td>
             </tr>
          {{end}}
          </tbody>
