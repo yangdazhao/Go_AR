@@ -79,19 +79,21 @@ func (u *TaskInfo) TableName() string {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 type Currentday struct {
-	Id           int64  `json:"id" pk:"auto"    orm:"column(id)"`
-	Company      string `json:"Value"           orm:"column(Company);"` // OneToOne relation
-	LoginResult  string `json:"Code"            orm:"column(LoginResult);null;size(20)"`
-	LoginDesc    string `json:"Desc"            orm:"column(LoginDesc)"`
-	TableSetID   string `json:"TableSetID"      orm:"column(TsId);null;size(6)"`
-	SsqType      string `json:"ssqType"         orm:"column(ssqType)"`
-	Type         string `json:"Type"            orm:"column(Type)"`
-	Ssqs         string `json:"Ssqs"            orm:"column(Ssqs)"`
-	Ssqz         string `json:"Ssqz"            orm:"column(Ssqz)"`
-	Submit       string `json:"Submit"          orm:"column(Submit)"`
-	TsResult     string `json:"Code"            orm:"column(TsResult)"`
-	TsDesc       string `json:"Desc"            orm:"column(TsDesc)"`
-	SerialNumber string `json:"SerialNumber"   orm:"column(SerialNumber)"`
+	Id          int64  `json:"id"     orm:"column(id)"`
+	CompanyName string `json:"Value"           orm:"column(CompanyName);"` // OneToOne relation
+	TaxpayerId  string `json:"Value"            orm:"column(TaxpayerId);"` // OneToOne relation
+	LoginResult string `json:"Code"            orm:"column(LoginResult);null;size(20)"`
+	//LoginDesc    string `json:"Desc"            orm:"column(LoginDesc)"`
+	TableSetID string `json:"TableSetID"      orm:"column(TsId);null;size(6)"`
+	//SsqType      string `json:"ssqType"         orm:"column(ssqType)"`
+	Type string `json:"Type"            orm:"column(Type)"`
+	Ssqs string `json:"Ssqs"            orm:"column(Ssqs)"`
+	Ssqz string `json:"Ssqz"            orm:"column(Ssqz)"`
+	//Submit       string `json:"Submit"          orm:"column(Submit)"`
+	TsResult string `json:"Code"            orm:"column(TsResult)"`
+	//TsDesc       string `json:"Desc"            orm:"column(TsDesc)"`
+	//SerialNumber string `json:"SerialNumber"    orm:"column(SerialNumber)"`
+	Created time.Time `orm:"auto_now_add;type(datetime)"`
 }
 
 func (u *Currentday) TableName() string {
