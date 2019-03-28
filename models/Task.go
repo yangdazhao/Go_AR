@@ -71,6 +71,7 @@ type TaskInfo struct {
 	Mac          string    `json:"Mac"             orm:"column(ClientMac)"`
 	Created      time.Time `orm:"auto_now_add;type(datetime)"`
 	Updated      time.Time `orm:"auto_now;type(datetime)"`
+	TaskJson     string    `json:"TaskJson"        orm:"column(TaskJson)"`
 }
 
 func (u *TaskInfo) TableName() string {
@@ -91,9 +92,11 @@ type Currentday struct {
 	Ssqz string `json:"Ssqz"            orm:"column(Ssqz)"`
 	//Submit       string `json:"Submit"          orm:"column(Submit)"`
 	TsResult string `json:"Code"            orm:"column(TsResult)"`
-	//TsDesc       string `json:"Desc"            orm:"column(TsDesc)"`
+	TsDesc   string `json:"Desc"            orm:"column(TsDesc)"`
 	//SerialNumber string `json:"SerialNumber"    orm:"column(SerialNumber)"`
+	Mac     string    `json:"Mac"             orm:"column(ClientMac)"`
 	Created time.Time `orm:"auto_now_add;type(datetime)"`
+	Time    int64     `orm:"auto_now_add;"`
 }
 
 func (u *Currentday) TableName() string {

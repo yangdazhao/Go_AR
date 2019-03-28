@@ -89,7 +89,7 @@
            <th style="text-align: center" width="210px">执行时间</th>
            <th style="text-align: center" width="60px">环境</th>
            <th style="text-align: center" width="300px">公司名称</th>
-           <th style="text-align: center" width="150px">纳税人识别号</th>
+           <th style="text-align: center" width="180px">纳税人识别号</th>
            <th style="text-align: center" width="100px">登录结果</th>
            <!-- <th style="text-align: center" width="150px">登录描述</th> -->
            <th style="text-align: center" width="80px">税种ID</th>
@@ -119,7 +119,14 @@
               <td style="text-align: center;width: 150px;"><span class="label label-default" >{{.Type}}</span></td>
               <td style="text-align: center;width: 150px;" title="{{.TsDesc}}"><span class="label label-default" >{{.TsResult}}</span></td>
               <td style="text-align: center;width: 150px;"><span class="label label-default" >{{.SsqType}}</span></td>
-              <td style="text-align: center;width: 150px;"><span class="label label-default" ><a href="https://cabinet.bigfintax.com/v1/Json/{{.Mac}}">{{.Mac}}</a></span></td>
+				{{if .TaskJson}}
+              <td style="text-align: center;width: 150px;"><span class="label label-default" >
+				<a href="https://cabinet.bigfintax.com/v1/{{.TaskJson}}">{{.Mac}}</a></span></td>
+				{{else}}
+              <td style="text-align: center;width: 150px;">
+				<span class="label label-default" >{{.Mac}}</span></td>
+				{{end}}
+
               <!-- https://cabinet.bigfintax.com/v1/Json/FA163E50B76B/ -->
               <!-- <td style="width: 150px;"><span class="label label-default" >{{.Updated}} - {{.Created}}</span></td> -->
               <td style=""><span class="label label-default" ></span></td>
