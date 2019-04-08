@@ -11,4 +11,5 @@ func init() {
 	beego.Router("/Task/:Time/", &controllers.TaskController{})
 	beego.Router("/Task/", &controllers.TaskController{})
 	beego.Router("/currentday/", &controllers.CurrentController{})
+	beego.Router("/statistical/:TaskID", &controllers.StatisticalConroller{})
 }

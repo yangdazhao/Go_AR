@@ -2,32 +2,66 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>任务统计</title>
     <script src="/static/js/echarts.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
 </head>
 <body>
  <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
-    <div id="main" style="width: 600px;height:400px;"></div>
+    <div id="main" style="width: 600px;height:800px;"></div>
         <script type="text/javascript">
             // 基于准备好的dom，初始化echarts实例
-            echarts.init(document.getElementById('main')).setOption({
-                title: {
-                    text: 'ECharts 入门示例'
-                },
-                tooltip: {},
-                legend: {
-                    data:['销量']
-                },
-                xAxis: {
-                    data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
-                },
-                yAxis: {},
-                series: [{
-                    name: '销量',
-                    type: 'bar',
-                    data: [5, 20, 36, 10, 10, 20]
-                }]
-            });
-        </script>
+            var myChart = echarts.init(document.getElementById('main'));
+			myChart.setOption(
+			{
+				title: {
+					subtext: '数据来自申报网关'
+				},
+				tooltip: {
+					trigger: 'axis',
+					axisPointer: {
+						type: 'shadow'
+					}
+				},
+				legend: {
+					data: ['2011年']
+				},
+				grid: {
+					left: '3%',
+					right: '4%',
+					bottom: '3%',
+					containLabel: true
+				},
+				xAxis: {
+					type: 'value',
+				},
+				yAxis: {
+					type: 'category',
+				},
+				series: [
+					{
+						type: 'bar',
+					}
+
+				],
+			}
+            );
+			// 异步加载数据
+	$.post('statistical').done(function (data) {
+		// 填入数据
+		myChart.setOption({
+		    title: {
+		        text:data.title,
+            },
+			yAxis: {
+				data: data.categories
+			},
+			series: [{
+				name: data.name,
+				data: data.data
+			}]
+		});
+	});
+        </script>	
 </body>
 </html>

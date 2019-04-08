@@ -19,7 +19,7 @@ func init() {
 	//* mysql用户：root ，root的秘密：tom ， 数据库名称：test ， 数据库别名：default
 	_ = orm.RegisterDataBase("default", "mysql", "yangdazhao:7721@tcp(10.10.40.3:3306)/taskinfoex?loc=Local&charset=utf8")
 
-	orm.RegisterModel(new(Company), new(LoginInfo), new(TaskInfo), new(Currentday))
+	orm.RegisterModel(new(Company), new(LoginInfo), new(TaskInfo), new(Currentday), new(Table70010004), new(TS700100))
 	// 自动建表
 	_ = orm.RunSyncdb("default", false, false)
 }
@@ -66,7 +66,7 @@ type TaskInfo struct {
 	Submit       string    `json:"Submit"          orm:"column(Submit)"`
 	TsResult     string    `json:"Code"            orm:"column(TsResult)"`
 	TsDesc       string    `json:"Desc"            orm:"column(TsDesc)"`
-	SerialNumber string    `json:"SerialNumber"   orm:"column(SerialNumber)"`
+	SerialNumber string    `json:"SerialNumber"    orm:"column(SerialNumber)"`
 	Env          string    `json:"Env"             orm:"column(Env)"`
 	Mac          string    `json:"Mac"             orm:"column(ClientMac)"`
 	Created      time.Time `orm:"auto_now_add;type(datetime)"`
@@ -80,23 +80,19 @@ func (u *TaskInfo) TableName() string {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 type Currentday struct {
-	Id          int64  `json:"id"     orm:"column(id)"`
-	CompanyName string `json:"Value"           orm:"column(CompanyName);"` // OneToOne relation
-	TaxpayerId  string `json:"Value"            orm:"column(TaxpayerId);"` // OneToOne relation
-	LoginResult string `json:"Code"            orm:"column(LoginResult);null;size(20)"`
-	//LoginDesc    string `json:"Desc"            orm:"column(LoginDesc)"`
-	TableSetID string `json:"TableSetID"      orm:"column(TsId);null;size(6)"`
-	//SsqType      string `json:"ssqType"         orm:"column(ssqType)"`
-	Type string `json:"Type"            orm:"column(Type)"`
-	Ssqs string `json:"Ssqs"            orm:"column(Ssqs)"`
-	Ssqz string `json:"Ssqz"            orm:"column(Ssqz)"`
-	//Submit       string `json:"Submit"          orm:"column(Submit)"`
-	TsResult string `json:"Code"            orm:"column(TsResult)"`
-	TsDesc   string `json:"Desc"            orm:"column(TsDesc)"`
-	//SerialNumber string `json:"SerialNumber"    orm:"column(SerialNumber)"`
-	Mac     string    `json:"Mac"             orm:"column(ClientMac)"`
-	Created time.Time `orm:"auto_now_add;type(datetime)"`
-	Time    int64     `orm:"auto_now_add;"`
+	Id          int64     `json:"id"     orm:"column(id)"`
+	CompanyName string    `json:"Value"           orm:"column(CompanyName);"` // OneToOne relation
+	TaxpayerId  string    `json:"Value"            orm:"column(TaxpayerId);"` // OneToOne relation
+	LoginResult string    `json:"Code"            orm:"column(LoginResult);null;size(20)"`
+	TableSetID  string    `json:"TableSetID"      orm:"column(TsId);null;size(6)"`
+	Type        string    `json:"Type"            orm:"column(Type)"`
+	Ssqs        string    `json:"Ssqs"            orm:"column(Ssqs)"`
+	Ssqz        string    `json:"Ssqz"            orm:"column(Ssqz)"`
+	TsResult    string    `json:"Code"            orm:"column(TsResult)"`
+	TsDesc      string    `json:"Desc"            orm:"column(TsDesc)"`
+	Mac         string    `json:"Mac"             orm:"column(ClientMac)"`
+	Created     time.Time `orm:"auto_now_add;type(datetime)"`
+	Time        int64     `orm:"auto_now_add;"`
 }
 
 func (u *Currentday) TableName() string {
