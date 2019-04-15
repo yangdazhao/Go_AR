@@ -6,7 +6,7 @@ import (
 	"go_AR/models"
 )
 
-type StatisticalConroller struct {
+type IndexController struct {
 	beego.Controller
 }
 
@@ -17,7 +17,7 @@ type JSONS struct {
 	Title      string   `json:"title" `
 }
 
-func (c *StatisticalConroller) Post() {
+func (c *IndexController) Post() {
 	param := c.Ctx.Input.Param(":TaskID")
 
 	if param == "task" {
@@ -55,10 +55,11 @@ func (c *StatisticalConroller) Post() {
 	c.ServeJSON()
 }
 
-func (c *StatisticalConroller) Get() {
+func (c *IndexController) Get() {
 	ope := c.Ctx.Input.Param(":TaskID")
 	c.Data["Website"] = "beego.me"
+
 	c.Data["Email"] = "yangdazhao@live.com"
 	c.Data["Param"] = ope
-	c.TplName = "echarts.tpl"
+	c.TplName = "index.tpl"
 }

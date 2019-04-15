@@ -19,7 +19,7 @@ func QueryC(c *CurrentController, currentDay time.Time) {
 	_ = o.Using("default")
 	var tasks []*models.Currentday
 	//filter := o.QueryTable(new(models.Currentday)).Filter("created__gt", currentDay).OrderBy("-created").RelatedSel()
-	filter := o.QueryTable(new(models.Currentday)).RelatedSel()
+	filter := o.QueryTable(new(models.Currentday)).OrderBy("-created").RelatedSel()
 	total, _ := filter.Count()
 	_, _ = filter.All(&tasks)
 	fmt.Println(tasks)
