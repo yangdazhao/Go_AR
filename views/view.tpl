@@ -89,7 +89,7 @@
            <!-- <th style="text-align: center" width="60px">环境</th> -->
            <th style="text-align: center" width="300px">公司名称</th>
            <th style="text-align: center" width="150px">纳税人识别号</th>
-           <th style="text-align: center" width="100px">登录结果</th>
+           <!-- <th style="text-align: center" width="100px">登录结果</th> -->
            <!-- <th style="text-align: center" width="150px">登录描述</th> -->
            <th style="text-align: center" width="80px">税种ID</th>
            <th style="text-align: center" width="90px">申报期起</th>
@@ -107,7 +107,7 @@
               <td style="text-align: center;width: 200px;"><span class="label label-default" >{{.Created}}</span></td>
               <td style=""><span class="label label-default" >{{.CompanyName}}</span></td>
               <td style=""><span class="label label-default" >{{.TaxpayerId}}</span></td>
-              <td style=""><span class="label label-default" >{{.LoginResult}}</span></td>
+              <!-- <td style=""><span class="label label-default" >{{.LoginResult}}</span></td> -->
               <td style=""><span class="label label-default" >{{.TableSetID}}</span></td>
               <td style=""><span class="label label-default" >{{.Ssqs}}</span></td>
               <td style=""><span class="label label-default" >{{.Ssqz}}</span></td>

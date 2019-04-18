@@ -85,12 +85,12 @@
 	共计任务数：{{.total}}
     <table class="table table-striped table-hover table-bordered "  width="1200px">
           <thead>
-           <th style="text-align: center" width="250px">序列号</th>
+<!--           <th style="text-align: center" width="250px">序列号</th>-->
            <th style="text-align: center" width="210px">执行时间</th>
            <th style="text-align: center" width="60px">环境</th>
            <th style="text-align: center" width="300px">公司名称</th>
            <th style="text-align: center" width="180px">纳税人识别号</th>
-           <th style="text-align: center" width="100px">登录结果</th>
+           <!-- <th style="text-align: center" width="100px">登录结果</th> -->
            <!-- <th style="text-align: center" width="150px">登录描述</th> -->
            <th style="text-align: center" width="80px">税种ID</th>
            <th style="text-align: center" width="90px">申报期起</th>
@@ -106,12 +106,14 @@
          <tbody id="sortable">
          {{range .tasks}}
             <tr class="sort-item">
-              <td style="text-align: center;width: 200px;"><span class="label label-default" >{{.SerialNumber}}</span></td>
+<!--              <td style="text-align: center;width: 200px;"><span class="label label-default" >{{.SerialNumber}}</span></td>-->
               <td style="width: 200px;"><span class="label label-default" >{{.Updated}}</span></td>
               <td style="width: 200px;"><span class="label label-default" >{{.Env}}</span></td>
               <td style="width: 200px;"><span class="label label-default" >{{.Company.CompanyName}}</span></td>
-			  <td style="width: 200px;"><span class="label label-default" >{{.Company.TaxpayerId}}</span></td>
-              <td style="text-align: center;width: 60px;" title="{{.LoginDesc}}"><span class="label label-default" >{{.LoginResult}}</span></td>
+	      <td style="width: 200px;"><span class="label label-default" >
+	          <a href="https://cabinet.bigfintax.com/TaskView/day/{{.Company.TaxpayerId}}">{{.Company.TaxpayerId}}</a>
+	      </span></td>
+              <!-- <td style="text-align: center;width: 60px;" title="{{.LoginDesc}}"><span class="label label-default" >{{.LoginResult}}</span></td> -->
               <!--<td style="width: 50px;"><span class="label label-default" >{{.LoginDesc}}</span></td>-->
               <td style="text-align: center;width: 80px;"><span class="label label-default" >{{.TableSetID}}</span></td>
               <td style="text-align: center;width: 80px;"><span class="label label-default" >{{.Ssqs}}</span></td>
@@ -119,13 +121,13 @@
               <td style="text-align: center;width: 150px;"><span class="label label-default" >{{.Type}}</span></td>
               <td style="text-align: center;width: 150px;" title="{{.TsDesc}}"><span class="label label-default" >{{.TsResult}}</span></td>
               <td style="text-align: center;width: 150px;"><span class="label label-default" >{{.SsqType}}</span></td>
-				{{if .TaskJson}}
+			{{if .TaskJson}}
               <td style="text-align: center;width: 150px;"><span class="label label-default" >
 				<a href="https://cabinet.bigfintax.com/v1/{{.TaskJson}}">{{.Mac}}</a></span></td>
 				{{else}}
               <td style="text-align: center;width: 150px;">
 				<span class="label label-default" >{{.Mac}}</span></td>
-				{{end}}
+			{{end}}
 
               <!-- https://cabinet.bigfintax.com/v1/Json/FA163E50B76B/ -->
               <!-- <td style="width: 150px;"><span class="label label-default" >{{.Updated}} - {{.Created}}</span></td> -->

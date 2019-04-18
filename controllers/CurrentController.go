@@ -2,14 +2,13 @@ package controllers
 
 import (
 	"fmt"
-	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"go_AR/models"
 	"time"
 )
 
 type CurrentController struct {
-	beego.Controller
+	AuthController
 }
 
 func QueryC(c *CurrentController, currentDay time.Time) {

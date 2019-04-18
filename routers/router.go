@@ -6,7 +6,9 @@ import (
 )
 
 func init() {
-	beego.Router("/", &controllers.MainController{})
+	beego.Router("/home/login", &controllers.AuthController{}, "post:PostData;get:Login")
+	beego.Router("/", 		&controllers.StatisticalConrollerEx{})
+	beego.Router("/index", &controllers.StatisticalConrollerEx{})
 	beego.Router("/Task/:Time/:TaxpayerId", &controllers.TaskController{})
 	beego.Router("/Task/:Time/", &controllers.TaskController{})
 	beego.Router("/Task/", &controllers.TaskController{})
@@ -14,3 +16,5 @@ func init() {
 	beego.Router("/statistical/:TaskID", &controllers.StatisticalConroller{})
 	beego.Router("/statisticalEx/", &controllers.StatisticalConrollerEx{})
 }
+
+

@@ -1,16 +1,15 @@
 package controllers
 
 import (
-	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"go_AR/models"
 )
 
 type IndexController struct {
-	beego.Controller
+	AuthController
 }
 
-type JSONS struct {
+type JSON3 struct {
 	Categories []string `json:"categories" `
 	Data       []int64  `json:"data" `
 	Name       string   `json:"name" `

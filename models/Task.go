@@ -56,6 +56,7 @@ func (u *LoginInfo) TableName() string {
 type TaskInfo struct {
 	Id           int64     `json:"id" pk:"auto"    orm:"column(id)"`
 	Company      *Company  `json:"Value"           orm:"column(Com_ID);rel(fk);null"` // OneToOne relation
+	TaskID       string  	`json:"Value"          orm:"column(TaskID);"` // OneToOne relation
 	LoginResult  string    `json:"Code"            orm:"column(LoginResult);null;size(20)"`
 	LoginDesc    string    `json:"Desc"            orm:"column(LoginDesc)"`
 	TableSetID   string    `json:"TableSetID"      orm:"column(TsId);null;size(6)"`

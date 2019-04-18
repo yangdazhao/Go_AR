@@ -1,24 +1,37 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/astaxie/beego/orm"
+	"github.com/astaxie/beego/session"
 	"go_AR/models"
 )
 
-type StatisticalConroller struct {
+type LoginControler struct {
 	AuthController
 }
 
-type JSONS struct {
-	Categories []string `json:"categories" `
-	Data       []int64  `json:"data" `
-	Name       string   `json:"name" `
-	Title      string   `json:"title" `
+
+var globalSessions *session.Manager
+
+
+func init() {
+	scf := &session.ManagerConfig{
+		CookieName:"gosessionid",
+		EnableSetCookie: true,
+		Gclifetime:3600,
+		Maxlifetime: 3600,
+		Secure: false,
+		CookieLifeTime: 3600,
+		ProviderConfig: "./tmp",
+	}
+
+	globalSessions,_ = session.NewManager("memory", scf)
+	go globalSessions.GC()
 }
 
-func (c *StatisticalConroller) Post() {
-	param := c.Ctx.Input.Param(":TaskID")
+
+func (this *LoginControler) Post() {
+	param := this.Ctx.Input.Param(":TaskID")
 
 	if param == "task" {
 		var tasks []*models.TaskId
@@ -34,8 +47,7 @@ func (c *StatisticalConroller) Post() {
 			categories[i] = tasks[i].Name
 		}
 		data := &JSONS{categories, srcData, "任务数量", "2019年4月份任务数量"}
-		fmt.Print(data)
-		c.Data["json"] = data
+		this.Data["json"] = data
 	} else if param == "taxpayer" {
 		var tasks []*models.TaskTaxpayer
 		filter := orm.NewOrm().QueryTable(new(models.TaskTaxpayer))
@@ -50,16 +62,26 @@ func (c *StatisticalConroller) Post() {
 			categories[i] = tasks[i].Name
 		}
 		data := &JSONS{categories, srcData, "税号数量", "2019年4月份税号数量"}
-		c.Data["json"] = data
+		this.Data["json"] = data
 	}
 
-	c.ServeJSON()
+	//this.SetSecureCookie()
+
+
+
+	this.ServeJSON()
 }
 
-func (c *StatisticalConroller) Get() {
-	ope := c.Ctx.Input.Param(":TaskID")
-	c.Data["Website"] = "beego.me"
-	c.Data["Email"] = "yangdazhao@live.com"
-	c.Data["Param"] = ope
-	c.TplName = "echarts.tpl"
+func (this *LoginControler) Get() {
+	var _, _ = this.GetSecureCookie("asta", "dgid")
+	ope := this.Ctx.Input.Param(":TaskID")
+	this.Data["Website"] = "beego.me"
+
+	this.Data["Email"] = "yangdazhao@live.com"
+	this.Data["Param"] = ope
+	this.TplName = "index.tpl"
 }
+
+
+
+//this.SetSecureCookie()

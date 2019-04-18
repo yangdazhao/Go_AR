@@ -2,13 +2,12 @@ package controllers
 
 import (
 	"fmt"
-	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"go_AR/models"
 )
 
 type StatisticalConrollerEx struct {
-	beego.Controller
+	AuthController
 }
 
 type Series struct {
@@ -26,6 +25,7 @@ type JSONS2 struct {
 	Title      string   `json:"title" `
 	Series     []Series `json:"series" `
 }
+
 func (c *StatisticalConrollerEx) Post() {
 	var tasks []*models.Tax_success
 	filter := orm.NewOrm().QueryTable(new(models.Tax_success))
@@ -85,7 +85,6 @@ func (c *StatisticalConrollerEx) Post() {
 
 	// 将切片赋值
 	for i := 0; i < len(tasks); i++ {
-		//srcData[i] = tasks[i]
 		categories[i] = tasks[i].Name
 		Series[0].Data[i] = tasks[i].Ts010100
 		Series[1].Data[i] = tasks[i].Ts010200
@@ -100,7 +99,6 @@ func (c *StatisticalConrollerEx) Post() {
 
 	data := &JSONS2{categories,  "任务数量", legend,"当月税种成功数量",Series}
 	c.Data["json"] = data
-	fmt.Print("123")
 	c.ServeJSON()
 }
 
@@ -109,5 +107,5 @@ func (c *StatisticalConrollerEx) Get() {
 	c.Data["Website"] = "beego.me"
 	c.Data["Email"] = "yangdazhao@live.com"
 	c.Data["Param"] = ope
-	c.TplName = "echarts2.tpl"
+	c.TplName = "user.tpl"
 }

@@ -20,7 +20,7 @@ func (u *TaskId) TableName() string {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 type TaskTaxpayer struct {
-	Id     int64  `json:"id" 				   	orm:"column(id)"`
+	Id     int64  `json:"id" 				orm:"column(id)"`
 	Taskid string `json:"Value"            	orm:"column(TaskID)"`
 	Name   string `json:"Code"            	orm:"column(Name)"`
 	Count  int64  `json:"Desc"            	orm:"column(Count)"`
