@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"go_AR/models"
 	"golang.org/x/text/encoding/simplifiedchinese"
@@ -12,7 +13,8 @@ import (
 )
 
 type USBController struct {
-	AuthController
+	beego.Controller
+	//AuthController
 }
 
 func (c *USBController) Post() {

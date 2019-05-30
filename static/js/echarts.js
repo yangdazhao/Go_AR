@@ -18267,7 +18267,7 @@ function linearMap(val, domain, range, clamp) {
 
     // Avoid accuracy problem in edge, such as
     // 146.39 - 62.83 === 83.55999999999999.
-    // See echarts/test/ut/spec/util/number.js#linearMap#accuracyError
+    // See echarts/test.html/ut/spec/util/number.js#linearMap#accuracyError
     // It is a little verbose for efficiency considering this method
     // is a hotspot.
     if (clamp) {
@@ -19874,7 +19874,7 @@ var globalDefault = {
     // It is recommended that `hoverLayerThreshold` is equivalent to or less than
     // `progressiveThreshold`, otherwise hover will cause restart of progressive,
     // which is unexpected.
-    // see example <echarts/test/heatmap-large.html>.
+    // see example <echarts/test.html/heatmap-large.html>.
     hoverLayerThreshold: 3000,
 
     // See: module:echarts/scale/Time
@@ -25275,7 +25275,7 @@ proto.updateStreamModes = function (seriesModel, view) {
     var large = seriesModel.get('large') && dataLen >= seriesModel.get('largeThreshold');
 
     // TODO: modDataCount should not updated if `appendData`, otherwise cause whole repaint.
-    // see `test/candlestick-large3.html`
+    // see `test.html/candlestick-large3.html`
     var modDataCount = seriesModel.get('progressiveChunkMode') === 'mod' ? dataLen : null;
 
     seriesModel.pipelineContext = pipeline.context = {
@@ -33119,7 +33119,7 @@ function isInLargeMode(seriesModel) {
     return seriesModel.pipelineContext && seriesModel.pipelineContext.large;
 }
 
-// See cases in `test/bar-start.html` and `#7412`, `#8747`.
+// See cases in `test.html/bar-start.html` and `#7412`, `#8747`.
 function getValueAxisStart(baseAxis, valueAxis, stacked) {
     var extent = valueAxis.getGlobalExtent();
     var min;
@@ -33687,7 +33687,7 @@ function getScaleExtent(scale, model) {
     //     Should not depend on series type `bar`?
     // (3) Fix that might overlap when using dataZoom.
     // (4) Consider other chart types using `barGrid`?
-    // See #6728, #4862, `test/bar-overflow-time-plot.html`
+    // See #6728, #4862, `test.html/bar-overflow-time-plot.html`
     var ecModel = model.ecModel;
     if (ecModel && (scaleType === 'time' /*|| scaleType === 'interval' */)) {
         var barSeriesModels = prepareLayoutBarSeries('bar', ecModel);
@@ -37130,7 +37130,7 @@ function createGridClipShape(cartesian, hasAnimation, forSymbol, seriesModel) {
     var height = Math.max(yExtent[0], yExtent[1]) - y;
 
     // Avoid float number rounding error for symbol on the edge of axis extent.
-    // See #7913 and `test/dataZoom-clip.html`.
+    // See #7913 and `test.html/dataZoom-clip.html`.
     if (forSymbol) {
         x -= 0.5;
         width += 0.5;
@@ -45799,7 +45799,7 @@ function mousewheel(e) {
         // Mac and VM Windows on Mac: scroll up: zoom out.
         // Windows: scroll up: zoom in.
 
-        // FIXME: Should do more test in different environment.
+        // FIXME: Should do more test.html in different environment.
         // wheelDelta is too complicated in difference nvironment
         // (https://developer.mozilla.org/en-US/docs/Web/Events/mousewheel),
         // although it has been normallized by zrender.
@@ -45812,7 +45812,7 @@ function mousewheel(e) {
     }
 
     if (shouldMove) {
-        // FIXME: Should do more test in different environment.
+        // FIXME: Should do more test.html in different environment.
         var absDelta = Math.abs(wheelDelta);
         // wheelDelta of mouse wheel is bigger than touch pad.
         var scrollDelta = (wheelDelta > 0 ? 1 : -1) * (absDelta > 3 ? 0.4 : absDelta > 1 ? 0.15 : 0.05);
@@ -71470,7 +71470,7 @@ function doCreateOrUpdate(el, dataIndex, elOption, animatableModel, group, data,
         || (elOptionType === 'image'
             && hasOwn(elOptionStyle, 'image') && elOptionStyle.image !== el.__customImagePath
         )
-        // FIXME test and remove this restriction?
+        // FIXME test.html and remove this restriction?
         || (elOptionType === 'text'
             && hasOwn(elOptionShape, 'text') && elOptionStyle.text !== el.__customText
         )
@@ -85073,7 +85073,7 @@ var ContinuousView = VisualMapView.extend({
             linearMap$3(hoverRange[0], sizeExtent, dataExtent, true),
             linearMap$3(hoverRange[1], sizeExtent, dataExtent, true)
         ];
-        // Consider data range is out of visualMap range, see test/visualMap-continuous.html,
+        // Consider data range is out of visualMap range, see test.html/visualMap-continuous.html,
         // where china and india has very large population.
         hoverRange[0] < sizeExtent[0] && (valueRange[0] = -Infinity);
         hoverRange[1] > sizeExtent[1] && (valueRange[1] = Infinity);
@@ -85094,7 +85094,7 @@ var ContinuousView = VisualMapView.extend({
 
         // When realtime is set as false, handles, which are in barGroup,
         // also trigger hoverLink, which help user to realize where they
-        // focus on when dragging. (see test/heatmap-large.html)
+        // focus on when dragging. (see test.html/heatmap-large.html)
         // When realtime is set as true, highlight will not show when hover
         // handle, because the label on handle, which displays a exact value
         // but not range, might mislead users.
@@ -90541,7 +90541,7 @@ registerPreprocessor(function (option) {
         if (toolboxOpt && toolboxOpt.feature) {
             var dataZoomOpt = toolboxOpt.feature.dataZoom;
             // FIXME: If add dataZoom when setOption in merge mode,
-            // no axis info to be added. See `test/dataZoom-extreme.html`
+            // no axis info to be added. See `test.html/dataZoom-extreme.html`
             addForAxis('xAxis', dataZoomOpt);
             addForAxis('yAxis', dataZoomOpt);
         }

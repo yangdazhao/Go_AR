@@ -22,7 +22,7 @@ func (c *IndexController) Post() {
 	if param == "task" {
 		var tasks []*models.TaskId
 		filter := orm.NewOrm().QueryTable(new(models.TaskId))
-		filter.OrderBy("TaskID").All(&tasks)
+		_, _ = filter.OrderBy("TaskID").All(&tasks)
 
 		// 预分配足够多的元素切片
 		srcData := make([]int64, len(tasks))
@@ -37,7 +37,7 @@ func (c *IndexController) Post() {
 	} else if param == "taxpayer" {
 		var tasks []*models.TaskTaxpayer
 		filter := orm.NewOrm().QueryTable(new(models.TaskTaxpayer))
-		filter.OrderBy("TaskID").All(&tasks)
+		_, _ = filter.OrderBy("TaskID").All(&tasks)
 
 		// 预分配足够多的元素切片
 		srcData := make([]int64, len(tasks))

@@ -4,8 +4,6 @@ import (
 	_ "go_AR/routers"
 	"net/http"
 	"net/http/httptest"
-	"path/filepath"
-	"runtime"
 	"testing"
 
 	"github.com/astaxie/beego"
@@ -13,9 +11,6 @@ import (
 )
 
 func init() {
-	_, file, _, _ := runtime.Caller(1)
-	apppath, _ := filepath.Abs(filepath.Dir(filepath.Join(file, ".."+string(filepath.Separator))))
-	beego.TestBeegoInit(apppath)
 }
 
 // TestBeego is a sample to run an endpoint test

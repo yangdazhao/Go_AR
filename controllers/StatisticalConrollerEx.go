@@ -1,12 +1,12 @@
 package controllers
 
 import (
-	"fmt"
 	"github.com/astaxie/beego/orm"
 	"go_AR/models"
 )
 
 type StatisticalConrollerEx struct {
+	//beego.Controller
 	AuthController
 }
 
@@ -14,74 +14,76 @@ type Series struct {
 	Name  string  `json:"name" `
 	Type  string  `json:"type" `
 	Stack string  `json:"stack" `
-	Data  []int64 `json:"data"`
+	Data  []int64 `json:"data" `
+	Label map[string]interface{} `json:"label"`
+	//"label": map[string]interface{}{"normal": normal},
 }
+
+func NewSeries(name string,Type string, stack string, length int, label map[string]interface{}) *Series {
+	return &Series{Name: name, Type: Type, Stack: stack, Data: make([]int64, length), Label: label}
+}
+
+//noinspection ALL
+//func NewSeries(name string, _type string, stack string, length int) *Series {
+//	normal := map[string]interface{}{
+//		"show":     true,
+//		"position": "right",
+//	}
+//	return &Series{
+//		Name: name,
+//		Type: _type,
+//		Stack: stack,
+//		Data: make([]int64, length),
+//		normal,
+//	}
+//}
 
 type JSONS2 struct {
 	Categories []string `json:"categories" `
-	//Data       []int64  `json:"data" `
 	Name       string   `json:"name" `
-	Legend     []string   `json:"legend" `
+	Legend     []string `json:"legend" `
 	Title      string   `json:"title" `
 	Series     []Series `json:"series" `
 }
 
 func (c *StatisticalConrollerEx) Post() {
-	var tasks []*models.Tax_success
-	filter := orm.NewOrm().QueryTable(new(models.Tax_success))
-	_, _ = filter.OrderBy("TaskID").All(&tasks)
-	fmt.Print(filter.Count())
-	// 预分配足够多的元素切片
-	//srcData := make([]int64, len(tasks))
+	group := c.Ctx.Input.Query("group")
+	var tasks [] models.TaxSuccess
+	if len(group) == 0 {
+		filter := orm.NewOrm().QueryTable(new(models.TaxSuccess))
+		_, _ = filter.OrderBy("TaskID").All(&tasks)
+	} else {
+		tasks = QueryInfoByGroup(group, "SB")
+	}
+
 	categories := make([]string, len(tasks))
-	legend := make([]string, 9)
-	legend[0] = "一般纳税人增值税"
-	legend[1] = "小规模增值税"
-	legend[2] = "财务报表一般企业会计制度"
-	legend[3] = "财务报表小企业会计准则"
-	legend[4] = "财务报表一般企业会计准则"
-	legend[5] = "印花税"
-	legend[6] = "附加税"
-	legend[7] = "通用申报表"
-	legend[8] = "企业所得税A类"
+	legend := []string{
+		"一般纳税人增值税",
+		"小规模增值税",
+		"财务报表一般企业会计制度",
+		"财务报表小企业会计准则",
+		"财务报表一般企业会计准则",
+		"印花税",
+		"附加税",
+		"通用申报表",
+		"企业所得税A类",
+	}
+
+	normal := map[string]interface{}{
+		//"show":     true,
+		//"position": "top",
+	}
 
 	Series := make([]Series, 9)
-
-	Series[0].Name = "一般纳税人增值税"
-	Series[0].Type = "line"
-	Series[0].Data = make([]int64, len(tasks))
-
-	Series[1].Name = "小规模增值税"
-	Series[1].Type = "line"
-	Series[1].Data = make([]int64, len(tasks))
-
-	Series[2].Name = "财务报表一般企业会计制度"
-	Series[2].Type = "line"
-	Series[2].Data = make([]int64, len(tasks))
-
-	Series[3].Name = "财务报表小企业会计准则"
-	Series[3].Type = "line"
-	Series[3].Data = make([]int64, len(tasks))
-
-	Series[4].Name = "财务报表一般企业会计准则"
-	Series[4].Type = "line"
-	Series[4].Data = make([]int64, len(tasks))
-
-	Series[5].Name = "印花税"
-	Series[5].Type = "line"
-	Series[5].Data = make([]int64, len(tasks))
-
-	Series[6].Name = "附加税"
-	Series[6].Type = "line"
-	Series[6].Data = make([]int64, len(tasks))
-
-	Series[7].Name = "通用申报表"
-	Series[7].Type = "line"
-	Series[7].Data = make([]int64, len(tasks))
-
-	Series[8].Name = "企业所得税A类"
-	Series[8].Type = "line"
-	Series[8].Data = make([]int64, len(tasks))
+	Series[0] = *NewSeries("一般纳税人增值税", "line", "", len(tasks),map[string]interface{}{"normal":normal})
+	Series[1] = *NewSeries("小规模增值税", "line", "", len(tasks),map[string]interface{}{"normal":normal})
+	Series[2] = *NewSeries("财务报表一般企业会计制度", "line", "", len(tasks),map[string]interface{}{"normal":normal})
+	Series[3] = *NewSeries("财务报表小企业会计准则", "line", "", len(tasks),map[string]interface{}{"normal":normal})
+	Series[4] = *NewSeries("财务报表一般企业会计准则", "line", "", len(tasks),map[string]interface{}{"normal":normal})
+	Series[5] = *NewSeries("印花税", "line", "", len(tasks),map[string]interface{}{"normal":normal})
+	Series[6] = *NewSeries("附加税", "line", "", len(tasks),map[string]interface{}{"normal":normal})
+	Series[7] = *NewSeries("通用申报表", "line", "", len(tasks),map[string]interface{}{"normal":normal})
+	Series[8] = *NewSeries("企业所得税A类", "line", "", len(tasks),map[string]interface{}{"normal":normal})
 
 	// 将切片赋值
 	for i := 0; i < len(tasks); i++ {
@@ -97,7 +99,7 @@ func (c *StatisticalConrollerEx) Post() {
 		Series[8].Data[i] = tasks[i].Ts040101
 	}
 
-	data := &JSONS2{categories,  "任务数量", legend,"当月税种成功数量",Series}
+	data := &JSONS2{categories, "任务数量", legend, group + "当月税种成功数量", Series}
 	c.Data["json"] = data
 	c.ServeJSON()
 }
@@ -107,5 +109,5 @@ func (c *StatisticalConrollerEx) Get() {
 	c.Data["Website"] = "beego.me"
 	c.Data["Email"] = "yangdazhao@live.com"
 	c.Data["Param"] = ope
-	c.TplName = "user.tpl"
+	c.TplName = "Statistical.tpl"
 }

@@ -57,7 +57,9 @@ func QueryEx(c *TaskController, currentDay time.Time, TaxpayerId string) {
 }
 
 func (c *TaskController) Get() {
+
 	taskid := c.Ctx.Input.Query("taskid")
+	fmt.Print(taskid)
 	ope := c.Ctx.Input.Param(":Time")
 	TaxpayerId := c.Ctx.Input.Param(":TaxpayerId")
 	t1 := time.Now().Year()  //年
@@ -65,7 +67,7 @@ func (c *TaskController) Get() {
 	t3 := time.Now().Day()   //日
 	var currentDay time.Time
 	if len(taskid) != 0 {
-		fmt.Println(currentDay.Format("2006-01-02 00:00:00")) //打印结果：2017-04-11 12:52:52.794351777 +0800 CST
+		fmt.Println(currentDay.Format("2006-01-02 00:00:00"))	 //打印结果：2017-04-11 12:52:52.794351777 +0800 CST
 		orm.Debug = false
 		o := orm.NewOrm()
 		_ = o.Using("default")

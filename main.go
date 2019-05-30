@@ -10,7 +10,6 @@ func main() {
 	beego.BConfig.WebConfig.Session.SessionOn = true
 	beego.BConfig.WebConfig.Session.SessionName = "bgsessionID"
 
-
 	//  允许跨域
 	beego.InsertFilter("*", beego.BeforeRouter, cors.Allow(&cors.Options{
 		AllowAllOrigins:  true,

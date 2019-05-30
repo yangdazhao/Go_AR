@@ -11,9 +11,6 @@ type CompanyController struct {
 }
 
 func (c *CompanyController) Post() {
-	//var ob models.Task
-	//_ = json.Unmarshal(c.Ctx.Input.RequestBody, &ob)
-	//fmt.Println(ob.SerialNumber)
 	c.TplName = "index.tpl"
 }
 

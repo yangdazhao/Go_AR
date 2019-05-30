@@ -5,7 +5,8 @@ import (
 	"github.com/astaxie/beego"
 )
 
-const SESSION_USER_KEY = "bgsessionID"
+//SESSION_USER_KEY
+const SessionUserKey string = "bgsessionID"
 
 type AuthController struct {
 	beego.Controller
@@ -13,7 +14,7 @@ type AuthController struct {
 }
 
 func (c *AuthController) Prepare() {
-	userLogin := c.GetSession(SESSION_USER_KEY)
+	userLogin := c.GetSession(SessionUserKey)
 	if userLogin == nil{
 		c.isLogin = false
 		if "/home/login" != c.Ctx.Request.URL.Path {
@@ -57,7 +58,7 @@ func (c *AuthController) PostData() {
 	//c.Ctx.SetCookie("name", u.Username, 100, "/")  // 设置cookie
 	//c.Ctx.SetCookie("name", u.Username, 100, "/")  // 设置cookie
 	//c.Ctx.SetCookie("password", u.Password, 100, "/")  // 设置cookie
-	c.SetSession(SESSION_USER_KEY, u)
+	c.SetSession(SessionUserKey, u)
 	c.Ctx.Redirect(302, "/index")
 }
 

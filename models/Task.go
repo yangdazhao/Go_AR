@@ -1,6 +1,8 @@
 package models
 
 import (
+	"fmt"
+	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	_ "github.com/go-sql-driver/mysql"
 	"time"
@@ -12,12 +14,26 @@ func init() {
 	   orm.RegisterDriver("postgres", orm.DR_Postgres) // 注册驱动
 	   orm.RegisterDataBase("default", "postgres", "user=postgres password=tom dbname=test host=127.0.0.1 port=5432 sslmode=disable")
 	*/
-	/**
-	 * MySQL 配置
+
+	/*** MySQL 配置
 	 * 注册驱动*/
 	_ = orm.RegisterDriver("mysql", orm.DRMySQL)
+	dbhost := beego.AppConfig.String("dbhost")
+	dbport := beego.AppConfig.String("dbport")
+	dbuser := beego.AppConfig.String("dbuser")
+	dbpassword := beego.AppConfig.String("dbpassword")
+	dbname := beego.AppConfig.String("dbname")
+	if dbport == "" {
+		dbport = "3306"
+	}
+
+	dsn := dbuser + ":" + dbpassword+ "@tcp(" + dbhost + ":" + dbport + ")/" + dbname + "?loc=Local&charset=utf8"
+	fmt.Println(dsn)
+	//_ = orm.RegisterDataBase("default", "mysql", dsn)
+
 	//* mysql用户：root ，root的秘密：tom ， 数据库名称：test ， 数据库别名：default
 	_ = orm.RegisterDataBase("default", "mysql", "yangdazhao:7721@tcp(10.10.40.3:3306)/taskinfoex?loc=Local&charset=utf8")
+	//_ = orm.RegisterDataBase("default", "mysql", "yangdazhao:7721@tcp(10.10.40.3:3306)/taskinfo?loc=Local&charset=utf8")
 
 	orm.RegisterModel(new(Company), new(LoginInfo), new(TaskInfo), new(Currentday), new(Table70010004), new(TS700100))
 	// 自动建表
