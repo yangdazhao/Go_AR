@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"AR/usbip"
 	"bytes"
 	"encoding/json"
 	"fmt"
@@ -10,6 +9,7 @@ import (
 	"go_AR/models"
 	"golang.org/x/text/encoding/simplifiedchinese"
 	"strconv"
+	"usbip"
 )
 
 type USBController struct {

@@ -9,6 +9,8 @@ import (
 func main() {
 	beego.BConfig.WebConfig.Session.SessionOn = true
 	beego.BConfig.WebConfig.Session.SessionName = "bgsessionID"
+	beego.BConfig.WebConfig.StaticDir["/Json"] = "Json"
+	beego.SetStaticPath("/Json", "Json")
 
 	//  允许跨域
 	beego.InsertFilter("*", beego.BeforeRouter, cors.Allow(&cors.Options{

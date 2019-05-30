@@ -27,13 +27,13 @@ func init() {
 		dbport = "3306"
 	}
 
-	dsn := dbuser + ":" + dbpassword+ "@tcp(" + dbhost + ":" + dbport + ")/" + dbname + "?loc=Local&charset=utf8"
+	dsn := dbuser + ":" + dbpassword + "@tcp(" + dbhost + ":" + dbport + ")/" + dbname + "?loc=Local&charset=utf8"
 	fmt.Println(dsn)
 	//_ = orm.RegisterDataBase("default", "mysql", dsn)
 
 	//* mysql用户：root ，root的秘密：tom ， 数据库名称：test ， 数据库别名：default
-	_ = orm.RegisterDataBase("default", "mysql", "yangdazhao:7721@tcp(10.10.40.3:3306)/taskinfoex?loc=Local&charset=utf8")
-	//_ = orm.RegisterDataBase("default", "mysql", "yangdazhao:7721@tcp(10.10.40.3:3306)/taskinfo?loc=Local&charset=utf8")
+	//_ = orm.RegisterDataBase("default", "mysql", "yangdazhao:7721@tcp(10.10.40.3:3306)/taskinfoex?loc=Local&charset=utf8")
+	_ = orm.RegisterDataBase("default", "mysql", "yangdazhao:7721@tcp(10.10.40.3:3306)/taskinfo?loc=Local&charset=utf8")
 
 	orm.RegisterModel(new(Company), new(LoginInfo), new(TaskInfo), new(Currentday), new(Table70010004), new(TS700100))
 	// 自动建表
@@ -71,8 +71,9 @@ func (u *LoginInfo) TableName() string {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 type TaskInfo struct {
 	Id           int64     `json:"id" pk:"auto"    orm:"column(id)"`
+	Uuid         string    `json:"uuid"  orm:"column(uuid)"`
 	Company      *Company  `json:"Value"           orm:"column(Com_ID);rel(fk);null"` // OneToOne relation
-	TaskID       string  	`json:"Value"          orm:"column(TaskID);"` // OneToOne relation
+	TaskID       string    `json:"TaskID"          orm:"column(TaskID);"`             // OneToOne relation
 	LoginResult  string    `json:"Code"            orm:"column(LoginResult);null;size(20)"`
 	LoginDesc    string    `json:"Desc"            orm:"column(LoginDesc)"`
 	TableSetID   string    `json:"TableSetID"      orm:"column(TsId);null;size(6)"`
@@ -89,6 +90,9 @@ type TaskInfo struct {
 	Created      time.Time `orm:"auto_now_add;type(datetime)"`
 	Updated      time.Time `orm:"auto_now;type(datetime)"`
 	TaskJson     string    `json:"TaskJson"        orm:"column(TaskJson)"`
+	Status       string    `json:"Status"          orm:"column(JsonResult)"`
+	Message      string    `json:"Message"         orm:"column(JsonDesc)"`
+	Se           string    `json:"Se"              orm:"column(Se)"`
 }
 
 func (u *TaskInfo) TableName() string {
