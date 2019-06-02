@@ -79,7 +79,9 @@ func (c *USBController) Post() {
 			usb := usbip.NewUsbIP(Cabinet.IP + ":" + Cabinet.CPort)
 
 			var JsonResult models.JsonResult
-			JsonResult.Result.Code = string(usb.Close(1))
+			port, _ := strconv.Atoi(Cabinet.UPort)
+			JsonResult.Result.Code = strconv.Itoa(usb.Close(uint8(port)))
+			fmt.Println(JsonResult.Result.Code)
 			c.Data["json"] = JsonResult
 		}
 	}

@@ -101,7 +101,7 @@ func (u *TaskInfo) TableName() string {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 type Currentday struct {
-	Id          int64     `json:"id"     orm:"column(id)"`
+	Id          int64     `json:"id"			  orm:"column(id)"`
 	CompanyName string    `json:"Value"           orm:"column(CompanyName);"` // OneToOne relation
 	TaxpayerId  string    `json:"Value"            orm:"column(TaxpayerId);"` // OneToOne relation
 	LoginResult string    `json:"Code"            orm:"column(LoginResult);null;size(20)"`

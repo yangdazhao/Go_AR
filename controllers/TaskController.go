@@ -74,7 +74,7 @@ func TaskHandler(task Task.Task, Mac string) {
 	o.Insert(taskInfo)
 }
 
-func TaskHandlerUpdate(task Task.Task, Mac string, TaskJson string) {
+func TaskHandlerUpdate(task Task.Task, Mac string, JsonFileName string) {
 	orm.Debug = false
 	o := orm.NewOrm()
 	_ = o.Using("default")
@@ -125,7 +125,7 @@ func TaskHandlerUpdate(task Task.Task, Mac string, TaskJson string) {
 	taskInfo.TsDesc = strings.Trim(tsResult.SelectElement("Desc").InnerText(), " \r\n")
 	taskInfo.Mac = Mac
 	taskInfo.Updated = time.Now()
-	taskInfo.TaskJson = TaskJson
+	taskInfo.TaskJson = JsonFileName
 	taskInfo.Env = task.Env
 	taskInfo.Message = task.Message
 	taskInfo.Status = task.Status
@@ -162,9 +162,9 @@ func (c *TaskController) Post() {
 	ope := c.Ctx.Input.Param(":Mac")
 	var task Task.Task
 	if json.Unmarshal(c.Ctx.Input.RequestBody, &task) == nil {
-		fmt.Println(task.CA)
+		//fmt.Println(task.CA)
 		TaskHandler(task, ope)
-		fmt.Println(task)
+		//fmt.Println(task)
 	}
 	c.Data["json"] = ""
 	c.ServeJSON()
@@ -174,12 +174,10 @@ func (c *TaskController) Put() {
 	ope := c.Ctx.Input.Param(":Mac")
 	var task Task.Task
 	if json.Unmarshal(c.Ctx.Input.RequestBody, &task) == nil {
-		fmt.Println(task.CA)
 		CreateDateDir(".\\", "Json")
 		CreateDateDir(".\\Json\\", ope)
 		TaskJson := SaveEx(CreateDateDir(".\\Json\\"+ope, ""), task)
 		TaskHandlerUpdate(task, ope, TaskJson)
-		fmt.Println(task)
 	}
 	c.Data["json"] = ""
 	c.ServeJSON()
