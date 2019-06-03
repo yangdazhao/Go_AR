@@ -3,9 +3,9 @@ package test
 import (
 	"JsonEx"
 	"Task"
-	"encoding/json"
 	"encoding/xml"
 	"fmt"
+	"github.com/astaxie/beego/orm"
 	"go_AR/models"
 	"strings"
 	"testing"
@@ -13,6 +13,7 @@ import (
 )
 
 func TestTask070100(t *testing.T) {
+	orm.Debug = true
 	task := Task.Task{}
 	var tJson = "..\\Json\\Task.3700301.91370100763687736M.010100.SB.200C000000.20190517164350.json"
 	JsonEx.NewJsonStruct().LoadEx(tJson, &task)
@@ -22,8 +23,9 @@ func TestTask070100(t *testing.T) {
 			fmt.Println(err)
 			return
 		}
-		tables := root.TaskSet
-		tablesString, _ := json.MarshalIndent(&tables, "", "    ")
-		fmt.Println(string(tablesString))
+		ts := root.TaskSet
+		for _, v := range ts.Task["010100"].Table[6].Param.Float {
+			v.Serialize()
+		}
 	}
 }

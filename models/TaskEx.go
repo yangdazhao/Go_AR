@@ -5,18 +5,16 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
+	"io"
 	_ "time"
 )
 
-import (
-	"io"
-)
-
 type Param map[string]string
+
 type xmlMapEntry struct {
 	XMLName xml.Name
 	Id      string `xml:"id,attr"`
-	Value   string `xml:",chardata"`
+	Value   string `xml:",innerxml"`
 }
 
 func (m Param) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
@@ -73,38 +71,18 @@ func (m TableSetEx) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 }
 
 func (m *TableSetEx) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	*m = TableSetEx{}
 	for {
 		var e XMLTableSet
-
 		err := d.Decode(&e)
 		if err == io.EOF {
 			break
 		} else if err != nil {
 			return err
 		}
-
-		for _, value := range start.Attr {
-			if value.Name.Local == "id" {
-				(*m)[value.Value] = e
-			}
-		}
+		(*m)[e.Id] = e
 	}
 	return nil
-}
-
-type XMLCell struct {
-	Id    string `xml:"id,attr,omitempty" json:"id,omitempty"`
-	Name  string `xml:"name,attr,omitempty" json:"name,omitempty"`
-	Index string `xml:"index,attr,omitempty" json:"index,omitempty"`
-	Token string `xml:"token,attr,omitempty"`
-	Value string `xml:",chardata"`
-}
-
-type XMLFloat struct {
-	Name  string    `xml:"name,attr"`
-	Index string    `xml:"index,attr"`
-	Input []XMLCell `xml:"Input"`
-	Check []XMLCell `xml:"Check"`
 }
 
 type xmlParam struct {
@@ -147,8 +125,8 @@ type XMLTableSet struct {
 }
 
 type XMLTask struct {
-	Id       string        `xml:"id,attr" Json:"id"`
-	TableSet []XMLTableSet `xml:"TableSet"`
+	Id string `xml:"id,attr" Json:"id"`
+	//TableSet TableSetEx 	`xml:"TableSet"`
 }
 
 type XMLTaskSet struct {
@@ -156,7 +134,8 @@ type XMLTaskSet struct {
 	CreditCode  string `xml:"CompanyInfo>CreditCode"`
 	TaxCode     string `xml:"CompanyInfo>TaxCode"`
 	TaxpayerId  string `xml:"CompanyInfo>TaxpayerId"`
-	Task        []XMLTask
+	//Task        []XMLTask
+	Task TableSetEx `xml:"Task" json:"TableSet"`
 }
 
 type XMLRoot struct {
@@ -175,4 +154,8 @@ func (task *XMLTaskSet) String() string {
 		return fmt.Sprintf("%+v", *task)
 	}
 	return out.String()
+}
+
+func (u *XMLTableSet) TableName() string {
+	return "TableSet"
 }

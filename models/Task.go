@@ -36,6 +36,7 @@ func init() {
 	_ = orm.RegisterDataBase("default", "mysql", "yangdazhao:7721@tcp(10.10.40.3:3306)/taskinfo?loc=Local&charset=utf8")
 
 	orm.RegisterModel(new(Company), new(LoginInfo), new(TaskInfo), new(Currentday), new(Table70010004), new(TS700100))
+	orm.RegisterModel(new(XMLCell), new(XMLFloat))
 	// 自动建表
 	_ = orm.RunSyncdb("default", false, false)
 }
