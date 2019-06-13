@@ -10,25 +10,22 @@ type LoginControler struct {
 	AuthController
 }
 
-
 var globalSessions *session.Manager
-
 
 func init() {
 	scf := &session.ManagerConfig{
-		CookieName:"gosessionid",
+		CookieName:      "gosessionid",
 		EnableSetCookie: true,
-		Gclifetime:3600,
-		Maxlifetime: 3600,
-		Secure: false,
-		CookieLifeTime: 3600,
-		ProviderConfig: "./tmp",
+		Gclifetime:      3600,
+		Maxlifetime:     3600,
+		Secure:          false,
+		CookieLifeTime:  3600,
+		ProviderConfig:  "./tmp",
 	}
 
-	globalSessions,_ = session.NewManager("memory", scf)
+	globalSessions, _ = session.NewManager("memory", scf)
 	go globalSessions.GC()
 }
-
 
 func (this *LoginControler) Post() {
 	param := this.Ctx.Input.Param(":TaskID")
@@ -67,8 +64,6 @@ func (this *LoginControler) Post() {
 
 	//this.SetSecureCookie()
 
-
-
 	this.ServeJSON()
 }
 
@@ -81,7 +76,5 @@ func (this *LoginControler) Get() {
 	this.Data["Param"] = ope
 	this.TplName = "index.tpl"
 }
-
-
 
 //this.SetSecureCookie()

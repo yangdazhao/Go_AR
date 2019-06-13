@@ -123,7 +123,7 @@
               <td style="text-align: center;width: 150px;"><span class="label label-default" >{{.SsqType}}</span></td>
 			{{if .TaskJson}}
               <td style="text-align: center;width: 150px;"><span class="label label-default" >
-				<a href="https://cabinet.bigfintax.com/v1/{{.TaskJson}}">{{.Mac}}</a></span></td>
+				<a href="https://cabinet.bigfintax.com/{{.TaskJson}}">{{.Mac}}</a></span></td>
 				{{else}}
               <td style="text-align: center;width: 150px;">
 				<span class="label label-default" >{{.Mac}}</span></td>

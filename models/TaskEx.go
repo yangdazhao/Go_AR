@@ -1,10 +1,7 @@
 package models
 
 import (
-	"bytes"
-	"encoding/json"
 	"encoding/xml"
-	"fmt"
 	"io"
 	_ "time"
 )
@@ -28,7 +25,7 @@ func (m Param) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	}
 
 	for k, v := range m {
-		e.Encode(xmlMapEntry{XMLName: xml.Name{Local: "Input"}, Id: k, Value: v})
+		_ = e.Encode(xmlMapEntry{XMLName: xml.Name{Local: "Input"}, Id: k, Value: v})
 	}
 
 	return e.EncodeToken(start.End())
@@ -51,7 +48,7 @@ func (m *Param) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	return nil
 }
 
-type TableSetEx map[string]XMLTableSet
+type TableSetEx map[string]*XMLTableSet
 
 func (m TableSetEx) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	if len(m) == 0 {
@@ -80,48 +77,16 @@ func (m *TableSetEx) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error 
 		} else if err != nil {
 			return err
 		}
-		(*m)[e.Id] = e
+		(*m)[e.TsId] = &e
 	}
 	return nil
 }
 
-type xmlParam struct {
-	//XMLName      xml.Name 				`xml:"Param"`
-	Input []XMLCell  `xml:"Input"`
-	Check []XMLCell  `xml:"Check"`
-	Float []XMLFloat `xml:"Float"`
-}
-
 type XMLCompanyInfo struct {
-	//XMLName      xml.Name 			`xml:"CompanyInfo"`
 	CompanyName string
 	CreditCode  string
 	TaxCode     string
 	TaxpayerId  string
-}
-
-type XMLTable struct {
-	//XMLName		xml.Name 				`xml:"Table"`
-	Id    string   `xml:"id,attr"`
-	Name  string   `xml:"name,attr"`
-	Page  string   `xml:"page,attr"`
-	Code  string   `xml:"Result>Code"`
-	Desc  string   `xml:"Result>Desc"`
-	Param xmlParam `xml:"Param"`
-}
-
-type XMLTableSet struct {
-	Id      string     `xml:"id,attr" json:"id,omitempty"`
-	Type    string     `xml:"type,attr" json:"type,omitempty"`
-	Ssqs    string     `xml:"ssqs,attr" json:"ssqs,omitempty"`
-	Ssqz    string     `xml:"ssqz,attr" json:"ssqz,omitempty"`
-	Submit  string     `xml:"submit,attr" json:"submit,omitempty"`
-	SsqType string     `xml:"ssqType,attr" json:"ssqType,omitempty"`
-	Se      string     `xml:"da,attr" json:"Se,omitempty"`
-	Code    string     `xml:"Result>Code"`
-	Desc    string     `xml:"Result>Desc"`
-	Table   []XMLTable `xml:"Table" json:"Table,omitempty"`
-	Param   Param      `xml:"Param" json:"Param,omitempty"`
 }
 
 type XMLTask struct {
@@ -129,13 +94,53 @@ type XMLTask struct {
 	//TableSet TableSetEx 	`xml:"TableSet"`
 }
 
+type XMLTaskLogion struct {
+	Id    int64
+	TsId  string `xml:"id,attr" json:"id,omitempty"`
+	Code  string `xml:"Result>Code"`
+	Desc  string `xml:"Result>Desc"`
+	Param *Param `xml:"Param" json:"Param,omitempty" orm:"-"`
+}
+
+type TableSetNx struct {
+	TaskLogin *XMLTaskLogion
+	TableSet  map[string]*XMLTableSet
+}
+
+func (m *TableSetNx) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	*m = TableSetNx{}
+	//m.TableSet = map[string]*XMLTableSet
+	// (*m).TableSet = map[string]*XMLTableSet
+
+	/////////////////////////////////////////////////////////////////////////////
+	var taskLogin XMLTaskLogion
+	err := d.Decode(&taskLogin)
+	if err == io.EOF {
+	} else if err != nil {
+		return err
+	}
+
+	(*m).TaskLogin = &taskLogin
+	////////////////////////////////////////////////////////////////////////////////
+	for {
+		var e XMLTableSet
+		err := d.Decode(&e)
+		if err == io.EOF {
+			break
+		} else if err != nil {
+			return err
+		}
+		(*m).TableSet[e.TsId] = &e
+	}
+	return nil
+}
+
 type XMLTaskSet struct {
-	CompanyName string `xml:"CompanyInfo>CompanyName"`
-	CreditCode  string `xml:"CompanyInfo>CreditCode"`
-	TaxCode     string `xml:"CompanyInfo>TaxCode"`
-	TaxpayerId  string `xml:"CompanyInfo>TaxpayerId"`
-	//Task        []XMLTask
-	Task TableSetEx `xml:"Task" json:"TableSet"`
+	CompanyName string     `xml:"CompanyInfo>CompanyName"`
+	CreditCode  string     `xml:"CompanyInfo>CreditCode"`
+	TaxCode     string     `xml:"CompanyInfo>TaxCode"`
+	TaxpayerId  string     `xml:"CompanyInfo>TaxpayerId"`
+	Task        TableSetEx `xml:"Task" json:"TableSet"`
 }
 
 type XMLRoot struct {
@@ -143,19 +148,14 @@ type XMLRoot struct {
 	TaskSet XMLTaskSet `xml:"TaskSet"`
 }
 
-func (task *XMLTaskSet) String() string {
-	b, err := json.Marshal(*task)
-	if err != nil {
-		return fmt.Sprintf("%+v", *task)
-	}
-	var out bytes.Buffer
-	err = json.Indent(&out, b, "", "  ")
-	if err != nil {
-		return fmt.Sprintf("%+v", *task)
-	}
-	return out.String()
+type XMLTaskSetNx struct {
+	CompanyName string      `xml:"CompanyInfo>CompanyName"`
+	CreditCode  string      `xml:"CompanyInfo>CreditCode"`
+	TaxCode     string      `xml:"CompanyInfo>TaxCode"`
+	TaxpayerId  string      `xml:"CompanyInfo>TaxpayerId"`
+	Task        *TableSetNx `xml:"Task" json:"TableSet"`
 }
-
-func (u *XMLTableSet) TableName() string {
-	return "TableSet"
+type XMLRootNx struct {
+	XMLName xml.Name      `xml:"Root"`
+	TaskSet *XMLTaskSetNx `xml:"TaskSet"`
 }

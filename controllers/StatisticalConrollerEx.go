@@ -11,15 +11,15 @@ type StatisticalConrollerEx struct {
 }
 
 type Series struct {
-	Name  string  `json:"name" `
-	Type  string  `json:"type" `
-	Stack string  `json:"stack" `
-	Data  []int64 `json:"data" `
+	Name  string                 `json:"name" `
+	Type  string                 `json:"type" `
+	Stack string                 `json:"stack" `
+	Data  []int64                `json:"data" `
 	Label map[string]interface{} `json:"label"`
 	//"label": map[string]interface{}{"normal": normal},
 }
 
-func NewSeries(name string,Type string, stack string, length int, label map[string]interface{}) *Series {
+func NewSeries(name string, Type string, stack string, length int, label map[string]interface{}) *Series {
 	return &Series{Name: name, Type: Type, Stack: stack, Data: make([]int64, length), Label: label}
 }
 
@@ -48,7 +48,7 @@ type JSONS2 struct {
 
 func (c *StatisticalConrollerEx) Post() {
 	group := c.Ctx.Input.Query("group")
-	var tasks [] models.TaxSuccess
+	var tasks []models.TaxSuccess
 	if len(group) == 0 {
 		filter := orm.NewOrm().QueryTable(new(models.TaxSuccess))
 		_, _ = filter.OrderBy("TaskID").All(&tasks)
@@ -75,15 +75,15 @@ func (c *StatisticalConrollerEx) Post() {
 	}
 
 	Series := make([]Series, 9)
-	Series[0] = *NewSeries("一般纳税人增值税", "line", "", len(tasks),map[string]interface{}{"normal":normal})
-	Series[1] = *NewSeries("小规模增值税", "line", "", len(tasks),map[string]interface{}{"normal":normal})
-	Series[2] = *NewSeries("财务报表一般企业会计制度", "line", "", len(tasks),map[string]interface{}{"normal":normal})
-	Series[3] = *NewSeries("财务报表小企业会计准则", "line", "", len(tasks),map[string]interface{}{"normal":normal})
-	Series[4] = *NewSeries("财务报表一般企业会计准则", "line", "", len(tasks),map[string]interface{}{"normal":normal})
-	Series[5] = *NewSeries("印花税", "line", "", len(tasks),map[string]interface{}{"normal":normal})
-	Series[6] = *NewSeries("附加税", "line", "", len(tasks),map[string]interface{}{"normal":normal})
-	Series[7] = *NewSeries("通用申报表", "line", "", len(tasks),map[string]interface{}{"normal":normal})
-	Series[8] = *NewSeries("企业所得税A类", "line", "", len(tasks),map[string]interface{}{"normal":normal})
+	Series[0] = *NewSeries("一般纳税人增值税", "line", "", len(tasks), map[string]interface{}{"normal": normal})
+	Series[1] = *NewSeries("小规模增值税", "line", "", len(tasks), map[string]interface{}{"normal": normal})
+	Series[2] = *NewSeries("财务报表一般企业会计制度", "line", "", len(tasks), map[string]interface{}{"normal": normal})
+	Series[3] = *NewSeries("财务报表小企业会计准则", "line", "", len(tasks), map[string]interface{}{"normal": normal})
+	Series[4] = *NewSeries("财务报表一般企业会计准则", "line", "", len(tasks), map[string]interface{}{"normal": normal})
+	Series[5] = *NewSeries("印花税", "line", "", len(tasks), map[string]interface{}{"normal": normal})
+	Series[6] = *NewSeries("附加税", "line", "", len(tasks), map[string]interface{}{"normal": normal})
+	Series[7] = *NewSeries("通用申报表", "line", "", len(tasks), map[string]interface{}{"normal": normal})
+	Series[8] = *NewSeries("企业所得税A类", "line", "", len(tasks), map[string]interface{}{"normal": normal})
 
 	// 将切片赋值
 	for i := 0; i < len(tasks); i++ {
@@ -109,5 +109,5 @@ func (c *StatisticalConrollerEx) Get() {
 	c.Data["Website"] = "beego.me"
 	c.Data["Email"] = "yangdazhao@live.com"
 	c.Data["Param"] = ope
-	c.TplName = "Statistical.tpl"
+	c.TplName = "index.tpl"
 }

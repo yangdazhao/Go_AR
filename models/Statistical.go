@@ -63,7 +63,7 @@ func (u *TaxSuccess) TableName() string {
 }
 
 func QueryInfoByGroup(Group string, Type string) []TaxSuccess {
-	var tasks [] TaxSuccess
+	var tasks []TaxSuccess
 	// tasks []models.Tax_success
 	o := orm.NewOrm()
 	num, err := o.Raw(`SELECT
@@ -136,7 +136,7 @@ FROM
 						AND ( t1.Env = 'pro' ) 
 						AND ( t1.Type = ? ) 
 						and T1.TaxpayerId = j.LoginNsrsbh
-						and j.GroupName = ?
+						and j.GroupName like '?%'
 					) 
 				GROUP BY
 					t1.TaskID,
