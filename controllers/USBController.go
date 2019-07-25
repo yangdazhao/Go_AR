@@ -14,7 +14,7 @@ import (
 
 type USBController struct {
 	beego.Controller
-	//AuthController
+	// AuthController
 }
 
 func (c *USBController) Post() {

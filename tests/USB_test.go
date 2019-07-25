@@ -49,10 +49,10 @@ func TestCaInfo(t *testing.T){
 		return
 	}
 	reader := bytes.NewReader(bytesData)
-
-	//生成要访问的url
+	
+	// 生成要访问的url
 	url := "https://cabinet.bigfintax.com/USB/CaInfo"
-	//url := "http://127.0.0.1:8081/USB/CabinetInfo"
+	// url := "http://127.0.0.1:8081/USB/CabinetInfo"
 	resp, err := http.Post(url, "application/x-www-form-urlencoded", reader)
 
 	if err != nil {
@@ -73,10 +73,10 @@ func TestReboot(t *testing.T){
 		return
 	}
 	reader := bytes.NewReader(bytesData)
-
-	//生成要访问的url
+	
+	// 生成要访问的url
 	url := "https://cabinet.bigfintax.com/USB/Reboot"
-	//url := "http://127.0.0.1:8081/USB/CabinetInfo"
+	// url := "http://127.0.0.1:8081/USB/CabinetInfo"
 	resp, err := http.Post(url, "application/x-www-form-urlencoded", reader)
 
 	if err != nil {
@@ -97,10 +97,10 @@ func TestClose(t *testing.T){
 		return
 	}
 	reader := bytes.NewReader(bytesData)
-
-	//生成要访问的url
+	
+	// 生成要访问的url
 	url := "https://cabinet.bigfintax.com/USB/Close"
-	//url := "http://127.0.0.1:8081/USB/CabinetInfo"
+	// url := "http://127.0.0.1:8081/USB/CabinetInfo"
 	resp, err := http.Post(url, "application/x-www-form-urlencoded", reader)
 
 	if err != nil {

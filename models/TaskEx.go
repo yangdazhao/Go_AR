@@ -91,7 +91,7 @@ type XMLCompanyInfo struct {
 
 type XMLTask struct {
 	Id string `xml:"id,attr" Json:"id"`
-	//TableSet TableSetEx 	`xml:"TableSet"`
+	// TableSet TableSetEx 	`xml:"TableSet"`
 }
 
 type XMLTaskLogion struct {
@@ -109,10 +109,10 @@ type TableSetNx struct {
 
 func (m *TableSetNx) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	*m = TableSetNx{}
-	//m.TableSet = map[string]*XMLTableSet
+	// m.TableSet = map[string]*XMLTableSet
 	// (*m).TableSet = map[string]*XMLTableSet
-
-	/////////////////////////////////////////////////////////////////////////////
+	
+	// ///////////////////////////////////////////////////////////////////////////
 	var taskLogin XMLTaskLogion
 	err := d.Decode(&taskLogin)
 	if err == io.EOF {
@@ -121,7 +121,7 @@ func (m *TableSetNx) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error 
 	}
 
 	(*m).TaskLogin = &taskLogin
-	////////////////////////////////////////////////////////////////////////////////
+	// //////////////////////////////////////////////////////////////////////////////
 	for {
 		var e XMLTableSet
 		err := d.Decode(&e)

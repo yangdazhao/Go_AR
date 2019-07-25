@@ -3,10 +3,11 @@ package routers
 import (
 	"github.com/astaxie/beego"
 	"go_AR/controllers"
+	"go_AR/controllers/Login"
 )
 
 func init() {
-	beego.Router("/home/login", &controllers.AuthController{}, "post:PostData;get:Login")
+	beego.Router("/home/login", &Login.AuthController{}, "post:PostData;get:Login")
 	beego.Router("/", &controllers.StatisticalConrollerEx{})
 	beego.Router("/statisticalNx", &controllers.StatisticalNxConroller{})
 	beego.Router("/index", &controllers.StatisticalConrollerEx{})
@@ -19,5 +20,4 @@ func init() {
 	beego.Router("/statistical/:TaskID", &controllers.StatisticalConroller{})
 	beego.Router("/statisticalEx/", &controllers.StatisticalConrollerEx{})
 	beego.Router("/USB/:USBOper", &controllers.USBController{})
-
 }

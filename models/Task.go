@@ -69,10 +69,10 @@ func (u *LoginInfo) TableName() string {
 	return "LoginInfo"
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 type TaskInfo struct {
 	Id           int64     `json:"id" pk:"auto"    orm:"column(id)"`
-	Uuid         string    `json:"uuid"  orm:"column(uuid)"`
+	Uuid         string    `json:"uuid"            orm:"column(uuid)"`
 	Company      *Company  `json:"Value"           orm:"column(Com_ID);rel(fk);null"` // OneToOne relation
 	TaskID       string    `json:"TaskID"          orm:"column(TaskID);"`             // OneToOne relation
 	LoginResult  string    `json:"Code"            orm:"column(LoginResult);null;size(20)"`
@@ -100,7 +100,7 @@ func (u *TaskInfo) TableName() string {
 	return "TaskInfo"
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 type Currentday struct {
 	Id          int64     `json:"id"			  orm:"column(id)"`
 	CompanyName string    `json:"Value"           orm:"column(CompanyName);"` // OneToOne relation

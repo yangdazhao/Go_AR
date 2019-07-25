@@ -2,11 +2,12 @@ package controllers
 
 import (
 	"github.com/astaxie/beego/orm"
-	"go_AR/models"
+    "go_AR/controllers/Login"
+    "go_AR/models"
 )
 
 type IndexController struct {
-	AuthController
+    Login.AuthController
 }
 
 type JSON3 struct {

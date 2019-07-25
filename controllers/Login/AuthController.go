@@ -1,11 +1,11 @@
-package controllers
+package Login
 
 import (
 	"fmt"
 	"github.com/astaxie/beego"
 )
 
-//SESSION_USER_KEY
+// SESSION_USER_KEY
 const SessionUserKey string = "bgsessionID"
 
 type AuthController struct {
@@ -29,15 +29,15 @@ func (c *AuthController) Prepare() {
 
 func (c *AuthController) Login() {
 	name := c.Ctx.GetCookie("name")
-	//password := c.Ctx.GetCookie("password")
+	// password := c.Ctx.GetCookie("password")
 	if name == "12364" {
 
 		c.Ctx.Redirect(302, "/statisticalEx")
-		//c.Ctx.WriteString("Username:" + name + "password:" + password)
+		// c.Ctx.WriteString("Username:" + name + "password:" + password)
 	} else {
 		//
 		c.Data["Email"] = "yangdazhao@live.com"
-		//c.Data["Param"] = ope
+		// c.Data["Param"] = ope
 		c.TplName = "login.tpl"
 	}
 }

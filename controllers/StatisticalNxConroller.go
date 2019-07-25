@@ -2,11 +2,12 @@ package controllers
 
 import (
 	"fmt"
+	"go_AR/controllers/Login"
 )
 
 type StatisticalNxConroller struct {
-	AuthController
-	//beego.Controller
+	Login.AuthController
+	// beego.Controller
 }
 
 func (c *StatisticalNxConroller) Post() {

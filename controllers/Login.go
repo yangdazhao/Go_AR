@@ -3,11 +3,12 @@ package controllers
 import (
 	"github.com/astaxie/beego/orm"
 	"github.com/astaxie/beego/session"
+	"go_AR/controllers/Login"
 	"go_AR/models"
 )
 
 type LoginControler struct {
-	AuthController
+	Login.AuthController
 }
 
 var globalSessions *session.Manager

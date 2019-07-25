@@ -20,7 +20,7 @@ import (
 
 type TaskController struct {
 	beego.Controller
-	//AuthController
+	// AuthController
 }
 
 func TaskHandler(task Task.Task, Mac string) {
@@ -54,8 +54,8 @@ func TaskHandler(task Task.Task, Mac string) {
 			fmt.Println(o.Insert(info))
 		}
 	}
-
-	//tlResult := xmlquery.FindOne(node, "//TableSet[@id='TaskLogin']/Result")
+	
+	// tlResult := xmlquery.FindOne(node, "//TableSet[@id='TaskLogin']/Result")
 	TableSet := xmlquery.FindOne(node, "//TableSet[@id!='TaskLogin']")
 
 	taskInfo := new(models.TaskInfo)
@@ -162,9 +162,9 @@ func (c *TaskController) Post() {
 	ope := c.Ctx.Input.Param(":Mac")
 	var task Task.Task
 	if json.Unmarshal(c.Ctx.Input.RequestBody, &task) == nil {
-		//fmt.Println(task.CA)
+		// fmt.Println(task.CA)
 		TaskHandler(task, ope)
-		//fmt.Println(task)
+		// fmt.Println(task)
 	}
 	c.Data["json"] = ""
 	c.ServeJSON()
@@ -184,7 +184,7 @@ func (c *TaskController) Put() {
 }
 
 func Query(c *TaskController, currentDay time.Time) {
-	fmt.Println(currentDay.Format("2006-01-02 00:00:00")) //打印结果：2017-04-11 12:52:52.794351777 +0800 CST
+	fmt.Println(currentDay.Format("2006-01-02 00:00:00")) // 打印结果：2017-04-11 12:52:52.794351777 +0800 CST
 	orm.Debug = false
 	o := orm.NewOrm()
 	_ = o.Using("default")
@@ -192,7 +192,7 @@ func Query(c *TaskController, currentDay time.Time) {
 	filter := o.QueryTable(new(models.TaskInfo)).Filter("created__gt", currentDay).OrderBy("-created").RelatedSel()
 	total, _ := filter.Count()
 	_, _ = filter.Limit(500).All(&tasks)
-	//fmt.Println(tasks)
+	// fmt.Println(tasks)
 	c.Data["Website"] = "Auto Declare"
 	c.Data["total"] = total
 	c.Data["tasks"] = tasks
@@ -201,16 +201,16 @@ func Query(c *TaskController, currentDay time.Time) {
 }
 
 func QueryEx(c *TaskController, currentDay time.Time, TaxpayerId string) {
-	fmt.Println(currentDay.Format("2006-01-02 00:00:00")) //打印结果：2017-04-11 12:52:52.794351777 +0800 CST
+	fmt.Println(currentDay.Format("2006-01-02 00:00:00")) // 打印结果：2017-04-11 12:52:52.794351777 +0800 CST
 	orm.Debug = false
 
 	var company models.Company
 	var tasks []*models.TaskInfo
 	_ = orm.NewOrm().QueryTable(new(models.Company)).Filter("TaxpayerId", TaxpayerId).One(&company)
 	filter := orm.NewOrm().QueryTable(new(models.TaskInfo)).Filter("Company", company.Id).Filter("created__gt", currentDay).OrderBy("-created").RelatedSel()
-
-	//.RelatedSel().OrderBy("-created")
-	//filter := o.QueryTable(new(models.TaskInfo)).Filter("created__gt", currentDay).OrderBy("-created").RelatedSel()
+	
+	// .RelatedSel().OrderBy("-created")
+	// filter := o.QueryTable(new(models.TaskInfo)).Filter("created__gt", currentDay).OrderBy("-created").RelatedSel()
 	total, _ := filter.Count()
 	_, _ = filter.Limit(500).All(&tasks)
 	c.Data["Website"] = "Auto Declare"
@@ -225,12 +225,12 @@ func (c *TaskController) Get() {
 	fmt.Print(taskid)
 	ope := c.Ctx.Input.Param(":Time")
 	TaxpayerId := c.Ctx.Input.Param(":TaxpayerId")
-	t1 := time.Now().Year()  //年
-	t2 := time.Now().Month() //月
-	t3 := time.Now().Day()   //日
+	t1 := time.Now().Year()  // 年
+	t2 := time.Now().Month() // 月
+	t3 := time.Now().Day()   // 日
 	var currentDay time.Time
 	if len(taskid) != 0 {
-		fmt.Println(currentDay.Format("2006-01-02 00:00:00")) //打印结果：2017-04-11 12:52:52.794351777 +0800 CST
+		fmt.Println(currentDay.Format("2006-01-02 00:00:00")) // 打印结果：2017-04-11 12:52:52.794351777 +0800 CST
 		orm.Debug = false
 		o := orm.NewOrm()
 		_ = o.Using("default")
@@ -239,7 +239,7 @@ func (c *TaskController) Get() {
 		total, _ := filter.Count()
 		fmt.Print(filter.Count())
 		_, _ = filter.Limit(200).All(&tasks)
-		//fmt.Println(tasks)
+		// fmt.Println(tasks)
 		c.Data["Website"] = "Auto Declare"
 		c.Data["total"] = total
 		c.Data["tasks"] = tasks
@@ -247,11 +247,11 @@ func (c *TaskController) Get() {
 		c.TplName = "task.tpl"
 	} else {
 		if len(ope) == 0 {
-			currentDay = time.Date(t1, t2, t3, 0, 0, 0, 0, time.Local) //获取当前时间，返回当前时间Time
+			currentDay = time.Date(t1, t2, t3, 0, 0, 0, 0, time.Local) // 获取当前时间，返回当前时间Time
 			Query(c, currentDay)
 			return
 		} else if ope == "day" {
-			currentDay = time.Date(t1, t2, t3, 0, 0, 0, 0, time.Local) //获取当前时间，返回当前时间Time
+			currentDay = time.Date(t1, t2, t3, 0, 0, 0, 0, time.Local) // 获取当前时间，返回当前时间Time
 			if len(TaxpayerId) == 0 {
 				Query(c, currentDay)
 			} else {
@@ -259,7 +259,7 @@ func (c *TaskController) Get() {
 			}
 			return
 		} else if ope == "month" {
-			currentDay = time.Date(t1, t2, 0, 0, 0, 0, 0, time.Local) //获取当前时间，返回当前时间Time
+			currentDay = time.Date(t1, t2, 0, 0, 0, 0, 0, time.Local) // 获取当前时间，返回当前时间Time
 			if len(TaxpayerId) == 0 {
 				Query(c, currentDay)
 			} else {

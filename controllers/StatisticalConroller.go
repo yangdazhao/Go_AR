@@ -3,11 +3,12 @@ package controllers
 import (
 	"fmt"
 	"github.com/astaxie/beego/orm"
+	"go_AR/controllers/Login"
 	"go_AR/models"
 )
 
 type StatisticalConroller struct {
-	AuthController
+	Login.AuthController
 }
 
 type JSONS struct {

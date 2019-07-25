@@ -1,6 +1,6 @@
 package models
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 type TS700100 struct {
 	Id   int64 `json:"id" pk:"auto"    orm:"column(id)"`
 	Type string
@@ -31,21 +31,21 @@ type Table70010004 struct {
 	//Ts700100 TS700100
 	/// 资产
 	/// 流动资产
-	Cash                 float64 //货币资金
-	ShortTermInvestments float64 //短期投资
+	Cash                 float64 // 货币资金
+	ShortTermInvestments float64 // 短期投资
 
-	NotesReceivable    float64 //应收票据
-	AccountsReceivable float64 //应收账款
-	AccountsPayment    float64 //预付账款
-	DividendReceivable float64 //应收股利
-	InterestReceivable float64 //应收利息
-	OtherReceivables   float64 //其他应收款
-	Stock              float64 //存货
-	ProductsIn         float64 //在产品
-	MerchandiseInStock float64 //库存商品
-	OtherCurrentAssets float64 //其他流动资产
-	TotalCurrentAssets float64 //动资产合计
-	/// 非流动资产
+	NotesReceivable    float64 // 应收票据
+	AccountsReceivable float64 // 应收账款
+	AccountsPayment    float64 // 预付账款
+	DividendReceivable float64 // 应收股利
+	InterestReceivable float64 // 应收利息
+	OtherReceivables   float64 // 其他应收款
+	Stock              float64 // 存货
+	ProductsIn         float64 // 在产品
+	MerchandiseInStock float64 // 库存商品
+	OtherCurrentAssets float64 // 其他流动资产
+	TotalCurrentAssets float64 // 动资产合计
+	// / 非流动资产
 	TotalNonCurrentAssets float64 //非流动资产合计
 	TotalAssets           float64 //资产总计
 	/// 负债及所有者权益

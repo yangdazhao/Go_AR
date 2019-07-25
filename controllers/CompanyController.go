@@ -3,11 +3,12 @@ package controllers
 import (
 	"fmt"
 	"github.com/astaxie/beego/orm"
-	"go_AR/models"
+    "go_AR/controllers/Login"
+    "go_AR/models"
 )
 
 type CompanyController struct {
-	AuthController
+    Login.AuthController
 }
 
 func (c *CompanyController) Post() {
