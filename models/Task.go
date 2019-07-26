@@ -73,8 +73,8 @@ func (u *LoginInfo) TableName() string {
 type TaskInfo struct {
 	Id           int64     `json:"id" pk:"auto"    orm:"column(id)"`
 	Uuid         string    `json:"uuid"            orm:"column(uuid)"`
-	Company      *Company  `json:"Value"           orm:"column(Com_ID);rel(fk);null"` // OneToOne relation
-	TaskID       string    `json:"TaskID"          orm:"column(TaskID);"`             // OneToOne relation
+	Company      *Company  `json:"Value"           orm:"column(Com_ID);rel(fk);null"`                           // OneToOne relation
+	TaskID       string    `json:"TaskID"          orm:"column(TaskID);"                 description:"税局ID"`	// OneToOne relation
 	LoginResult  string    `json:"Code"            orm:"column(LoginResult);null;size(20)"`
 	LoginDesc    string    `json:"Desc"            orm:"column(LoginDesc)"`
 	TableSetID   string    `json:"TableSetID"      orm:"column(TsId);null;size(6)"`
@@ -113,7 +113,7 @@ type Currentday struct {
 	TsResult    string    `json:"Code"            orm:"column(TsResult)"`
 	TsDesc      string    `json:"Desc"            orm:"column(TsDesc)"`
 	Mac         string    `json:"Mac"             orm:"column(ClientMac)"`
-	Created     time.Time `orm:"auto_now_add;type(datetime)"`
+	Created     time.Time `orm:"auto_now_add;	type(datetime)"`
 	Time        int64     `orm:"auto_now_add;"`
 }
 

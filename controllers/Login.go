@@ -28,8 +28,8 @@ func init() {
 	go globalSessions.GC()
 }
 
-func (this *LoginControler) Post() {
-	param := this.Ctx.Input.Param(":TaskID")
+func (c *LoginControler) Post() {
+	param := c.Ctx.Input.Param(":TaskID")
 
 	if param == "task" {
 		var tasks []*models.TaskId
@@ -45,7 +45,7 @@ func (this *LoginControler) Post() {
 			categories[i] = tasks[i].Name
 		}
 		data := &JSONS{categories, srcData, "任务数量", "2019年4月份任务数量"}
-		this.Data["json"] = data
+		c.Data["json"] = data
 	} else if param == "taxpayer" {
 		var tasks []*models.TaskTaxpayer
 		filter := orm.NewOrm().QueryTable(new(models.TaskTaxpayer))
@@ -60,12 +60,12 @@ func (this *LoginControler) Post() {
 			categories[i] = tasks[i].Name
 		}
 		data := &JSONS{categories, srcData, "税号数量", "2019年4月份税号数量"}
-		this.Data["json"] = data
+		c.Data["json"] = data
 	}
 
-	//this.SetSecureCookie()
+	//c.SetSecureCookie()
 
-	this.ServeJSON()
+	c.ServeJSON()
 }
 
 func (this *LoginControler) Get() {

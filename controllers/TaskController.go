@@ -162,9 +162,7 @@ func (c *TaskController) Post() {
 	ope := c.Ctx.Input.Param(":Mac")
 	var task Task.Task
 	if json.Unmarshal(c.Ctx.Input.RequestBody, &task) == nil {
-		// fmt.Println(task.CA)
 		TaskHandler(task, ope)
-		// fmt.Println(task)
 	}
 	c.Data["json"] = ""
 	c.ServeJSON()
