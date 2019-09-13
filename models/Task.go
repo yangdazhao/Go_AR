@@ -2,9 +2,11 @@ package models
 
 import (
 	"fmt"
+	"github.com/antchfx/xmlquery"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	_ "github.com/go-sql-driver/mysql"
+	"strings"
 	"time"
 )
 
@@ -47,6 +49,17 @@ type Company struct {
 	CompanyName string `json:"CompanyName"     orm:"column(CompanyName)"`
 }
 
+func NewCompanyEx(company *Node) *Company {
+	return &Company{
+		TaxpayerId:  company.SelectElement("TaxpayerId").InnerText(),
+		CompanyName: company.SelectElement("CompanyName").InnerText(),
+	}
+}
+
+func NewCompany(taxpayerId string, companyName string) *Company {
+	return &Company{TaxpayerId: taxpayerId, CompanyName: companyName}
+}
+
 func (u *Company) TableName() string {
 	return "Company"
 }
@@ -56,6 +69,10 @@ type LoginInfo struct {
 	Company *Company `json:"Value"           orm:"column(Com_ID);rel(fk);null"` // OneToOne relation
 	Key     string   `json:"Key"             orm:"column(Key)"`
 	Value   string   `json:"Value"           orm:"column(Value)"`
+}
+
+func NewLoginInfo(company *Company, input *Node) *LoginInfo {
+	return &LoginInfo{Company: company, Key: input.SelectAttr("id"), Value: input.InnerText()}
 }
 
 // 多字段唯一键
@@ -73,8 +90,8 @@ func (u *LoginInfo) TableName() string {
 type TaskInfo struct {
 	Id           int64     `json:"id" pk:"auto"    orm:"column(id)"`
 	Uuid         string    `json:"uuid"            orm:"column(uuid)"`
-	Company      *Company  `json:"Value"           orm:"column(Com_ID);rel(fk);null"`                           // OneToOne relation
-	TaskID       string    `json:"TaskID"          orm:"column(TaskID);"                 description:"税局ID"`	// OneToOne relation
+	Company      *Company  `json:"Company"         orm:"column(Com_ID);rel(fk);null"`                        // OneToOne relation
+	TaskID       string    `json:"TaskID"          orm:"column(TaskID);"                 description:"税局ID"` // OneToOne relation
 	LoginResult  string    `json:"Code"            orm:"column(LoginResult);null;size(20)"`
 	LoginDesc    string    `json:"Desc"            orm:"column(LoginDesc)"`
 	TableSetID   string    `json:"TableSetID"      orm:"column(TsId);null;size(6)"`
@@ -96,7 +113,48 @@ type TaskInfo struct {
 	Se           string    `json:"Se"              orm:"column(Se)"`
 }
 
-func (u *TaskInfo) TableName() string {
+func NewTaskInfo(
+	uuid string,
+	company *Company,
+	TableSet *xmlquery.Node,
+	serialNumber string,
+	env string,
+	mac string,
+) *TaskInfo {
+	return &TaskInfo{
+		Uuid:         uuid,
+		Company:      company,
+		TaskID:       TableSet.Parent.SelectAttr("id"),
+		TableSetID:   TableSet.SelectAttr("id"),
+		SsqType:      TableSet.SelectAttr("ssqType"),
+		Type:         TableSet.SelectAttr("type"),
+		Ssqs:         TableSet.SelectAttr("ssqs"),
+		Ssqz:         TableSet.SelectAttr("ssqz"),
+		Submit:       TableSet.SelectAttr("submit"),
+		SerialNumber: serialNumber,
+		Env:          env,
+		Mac:          mac,
+	}
+}
+
+func (t *TaskInfo) UpdateData(
+	tlResult *xmlquery.Node,
+	tsResult *xmlquery.Node,
+	JsonFileName string,
+	Message string,
+	Status string,
+) {
+	t.LoginResult = tlResult.SelectElement("Code").InnerText()
+	t.LoginDesc = tlResult.SelectElement("Desc").InnerText()
+	t.TsResult = tsResult.SelectElement("Code").InnerText()
+	t.TsDesc = strings.Trim(tsResult.SelectElement("Desc").InnerText(), " \r\n")
+	t.Updated = time.Now()
+	t.TaskJson = JsonFileName
+	t.Message = Message
+	t.Status = Status
+}
+
+func (t *TaskInfo) TableName() string {
 	return "TaskInfo"
 }
 

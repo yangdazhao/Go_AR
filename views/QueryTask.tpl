@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Bootstrap 101 Template</title>
+    <title>定位一下</title>
 
     <!-- Bootstrap -->
     <!-- Latest compiled and minified CSS -->
@@ -26,19 +26,7 @@
     <form action="./" method="POST" role="form" id="taskinfo">
         <legend>任务详情查询</legend>
         <div class="row">
-            <!-- <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"> -->
-                <!-- <div class="form-group"> -->
-                    <!-- <label for="">公司名称</label> -->
-                    <!-- <input type="text" class="form-control" name="companyname" id="companyname" placeholder="公司名称"> -->
-                <!-- </div> -->
-            <!-- </div> -->
-            <!-- <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"> -->
-                <!-- <div class="form-group"> -->
-                    <!-- <label for="">税号</label> -->
-                    <!-- <input type="text" class="form-control" name="taxpayerid" id="taxpayerid" placeholder="税号长度为18位"> -->
-                <!-- </div> -->
-            <!-- </div> -->
-            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 <div class="form-group">
                     <label for="">流水号或者公司名称或者税号</label>
                     <input 
@@ -50,41 +38,54 @@
                 </div>
             </div>
             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                <button type="button" class="btn btn-primary" onclick="query($('#taskinfo').serializeJSON())">定位一下</button>
+                <button type="button" class="btn btn-primary" onclick="QueryEx()">定位一下</button>
             </div>
         </div>
     </form>
     <table id="mytab" class="table table-hover"></table>
-
 </div>
+
+    <div class="footer">
+        <a src="https://pan.bigfintax.com/s/cWhi9cRYqg6W6rN">工具下载</a>
+    </div>
 <script>
 function checknum(value) {
     var Regx = /^[A-Za-z0-9]*$/;
     if (Regx.test(value)) {
         return true;
-    }
-    else {
+    }else {
         return false;
     }
 }
 
-var KeyWord = jQuery("#serialnumber").val();
-
-if(checknum(KeyWord))
+function QueryEx()
 {
-	
-}
-else
-{
-
+	var KeyWord = jQuery("#serialnumber").val().trim();
+	if(checknum(KeyWord))
+	{
+		if( KeyWord.length == 32)
+		{
+			query({"serialnumber":KeyWord});
+		}
+		else if( KeyWord.length == 18 ){
+			query({"taxpayerid":KeyWord});
+		}
+		else{
+			query({});
+		}
+	}
+	else
+	{
+		query({"taxpayerid":KeyWord});
+	}
 }
 		
-function query(id) {
+function query(Params) {
     $('#mytab').bootstrapTable({
         method: 'post',
         contentType: "application/json",//必须要有！！！！
         url: "TaskQuery",//要请求数据的文件路径
-        height: auto,//高度调整
+        height: 'auto',//高度调整
         toolbar: '#toolbar',//指定工具栏
         striped: true, //是否显示行间隔色
         dataField: "res",//bootstrap table 可以前端分页也可以后端分页，这里
@@ -93,12 +94,11 @@ function query(id) {
         pageNumber: 1, //初始化加载第一页，默认第一页
         pagination: true,//是否分页
         queryParamsType: 'limit',//查询参数组织方式
-        queryParams: id,//请求服务器时所传的参数
-        //queryParams: $("#taskinfo").serializeJSON(),//请求服务器时所传的参数
+        queryParams: Params,//请求服务器时所传的参数
         sidePagination: 'server',//指定服务器端分页
         pageSize: 10,//单页记录数
         pageList: [5, 10, 20, 30],//分页步进值
-        showRefresh: true,//刷新按钮
+        showRefresh: false,//刷新按钮
         showColumns: true,
         clickToSelect: true,//是否启用点击选中行
         toolbarAlign: 'right',//工具栏对齐方式
@@ -109,12 +109,12 @@ function query(id) {
                 title: '序列号',
                 field: 'SerialNumber',
                 width: '100px',
-                sortable: true
+                //sortable: true
             },
             {
                 title: '公司名',
                 field: 'Company.CompanyName',
-                sortable: true
+                //sortable: true
             },
             {
                 title: '税种id',
@@ -123,7 +123,6 @@ function query(id) {
             {
                 title: '开始时间',
                 field: 'Created',
-                sortable: true,
                 width: '200px',
             },
             {
@@ -135,6 +134,7 @@ function query(id) {
                 title: '状态',
                 field: 'Message',
                 align: 'center',
+				width: '40px',
             },
             {
                 title: '详情',
@@ -151,9 +151,12 @@ function query(id) {
 
     //三个参数，value代表该列的值
     function aFormatter(value, row, index) {
-        var uri = "https://cabinet.bigfintax.com/";
+		if(value.length){
+		var uri = "https://cabinet.bigfintax.com/";
         uri += value;
         return ['<a href="'+ uri +'">Json</a> | <a href="'+ uri +'">日志</a>'].join("")
+		}
+		return "";
     }
 
     //请求服务数据时所传参数
@@ -172,12 +175,6 @@ function query(id) {
     $('#search_btn').click(function () {
         $('#mytab').bootstrapTable('refresh', {url: '../index.php/admin/index/userManagement'});
     })
-
-    //tableHeight函数
-    function tableHeight() {
-        //可以根据自己页面情况进行调整
-        return $(window).height() - 280;
-    }
 }
 </script>
 

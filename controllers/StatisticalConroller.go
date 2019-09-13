@@ -5,6 +5,7 @@ import (
 	"github.com/astaxie/beego/orm"
 	"go_AR/controllers/Login"
 	"go_AR/models"
+	"time"
 )
 
 type StatisticalConroller struct {
@@ -19,6 +20,8 @@ type JSONS struct {
 }
 
 func (c *StatisticalConroller) Post() {
+	now := time.Now()
+
 	param := c.Ctx.Input.Param(":TaskID")
 
 	normal := map[string]interface{}{
@@ -44,7 +47,7 @@ func (c *StatisticalConroller) Post() {
 
 		title := make(map[string]interface{})
 		title["subtext"] = "数据来自申报网关"
-		title["text"] = "2019年4月份任务数量"
+		title["text"] = now.Format("2006年01月份任务数量")
 
 		tooltip := make(map[string]interface{})
 		tooltip["trigger"] = "axis"
@@ -100,7 +103,7 @@ func (c *StatisticalConroller) Post() {
 		) as w
 		`).QueryRow(&temp))
 
-		fmt.Println("TOTAL: ",temp)
+		fmt.Println("TOTAL: ", temp)
 
 		////////////////////////////////////////////////////
 
@@ -117,10 +120,10 @@ func (c *StatisticalConroller) Post() {
 			categories[i] = tasks[i].Name
 		}
 
-		title := make(map[string]interface{})
-		title["subtext"] = "数据来自申报网关"
-		//i := maps[0]["TOTAL"](valu)
-		title["text"] = "2019年4月份税号数量 " + temp.Total
+		title := map[string]interface{}{
+			"subtext": "数据来自申报网关",
+			"text":    now.Format("2006年01月份税号数量") + temp.Total,
+		}
 
 		tooltip := make(map[string]interface{})
 		tooltip["trigger"] = "axis"

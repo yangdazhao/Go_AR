@@ -3,13 +3,13 @@ package controllers
 import (
 	"fmt"
 	"github.com/astaxie/beego/orm"
-    "go_AR/controllers/Login"
-    "go_AR/models"
+	"go_AR/controllers/Login"
+	"go_AR/models"
 	"time"
 )
 
 type CurrentController struct {
-    Login.AuthController
+	Login.AuthController
 }
 
 func QueryC(c *CurrentController, currentDay time.Time) {
@@ -18,7 +18,6 @@ func QueryC(c *CurrentController, currentDay time.Time) {
 	o := orm.NewOrm()
 	_ = o.Using("default")
 	var tasks []*models.Currentday
-	// filter := o.QueryTable(new(models.Currentday)).Filter("created__gt", currentDay).OrderBy("-created").RelatedSel()
 	filter := o.QueryTable(new(models.Currentday)).OrderBy("-created").RelatedSel()
 	total, _ := filter.Count()
 	_, _ = filter.All(&tasks)

@@ -12,9 +12,6 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-
-	//"net/http"
-	//"ORM/models"
 	"time"
 )
 
@@ -23,59 +20,35 @@ type TaskController struct {
 	// AuthController
 }
 
+//TaskHandler
 func TaskHandler(task Task.Task, Mac string) {
-	orm.Debug = false
 	o := orm.NewOrm()
 	_ = o.Using("default")
 
 	node, _ := xmlquery.Parse(strings.NewReader(task.Data))
-	Company := xmlquery.FindOne(node, "//TaskSet/CompanyInfo")
-	Company.SelectElement("CompanyName")
-	fmt.Printf("%v", Company.SelectElement("CompanyName").InnerText())
+	_Comp := xmlquery.FindOne(node, "//TaskSet/CompanyInfo")
+	fmt.Printf("%v", _Comp.SelectElement("CompanyName").InnerText())
 
-	comEx := new(models.Company)
 	com := new(models.Company)
-	qc := o.QueryTable(comEx)
-	if qc.Filter("TaxpayerId", Company.SelectElement("TaxpayerId").InnerText()).Exist() {
-		_ = qc.Filter("TaxpayerId", Company.SelectElement("TaxpayerId").InnerText()).One(com)
+	qc := o.QueryTable(new(models.Company))
+	if qc.Filter("TaxpayerId", _Comp.SelectElement("TaxpayerId").InnerText()).Exist() {
+		_ = qc.Filter("TaxpayerId", _Comp.SelectElement("TaxpayerId").InnerText()).One(com)
 	} else {
-		com.CompanyName = Company.SelectElement("CompanyName").InnerText()
-		com.TaxpayerId = Company.SelectElement("TaxpayerId").InnerText()
-		fmt.Println(o.Insert(com))
+		_, _ = o.Insert(models.NewCompanyEx(_Comp))
 	}
 
-	InputSet := xmlquery.Find(node, "//TableSet[@id='TaskLogin']/Param/Input")
-	for _, value := range InputSet {
+	for _, value := range xmlquery.Find(node, "//TableSet[@id='TaskLogin']/Param/Input") {
 		if len(value.InnerText()) > 0 {
-			info := new(models.LoginInfo)
-			info.Company = com
-			info.Key = value.SelectAttr("id")
-			info.Value = value.InnerText()
-			fmt.Println(o.Insert(info))
+			_, _ = o.Insert(models.NewLoginInfo(com, value))
 		}
 	}
-	
-	// tlResult := xmlquery.FindOne(node, "//TableSet[@id='TaskLogin']/Result")
-	TableSet := xmlquery.FindOne(node, "//TableSet[@id!='TaskLogin']")
 
-	taskInfo := new(models.TaskInfo)
-	taskInfo.Company = com
-	taskInfo.TaskID = TableSet.Parent.SelectAttr("id")
-	taskInfo.TableSetID = TableSet.SelectAttr("id")
-	taskInfo.SsqType = TableSet.SelectAttr("ssqType")
-	taskInfo.Ssqs = TableSet.SelectAttr("ssqs")
-	taskInfo.Ssqz = TableSet.SelectAttr("ssqz")
-	taskInfo.Type = TableSet.SelectAttr("type")
-	taskInfo.Submit = TableSet.SelectAttr("submit")
-	taskInfo.SerialNumber = task.SerialNumber
-	taskInfo.Env = task.Env
-	taskInfo.Uuid = task.Uuid
-	taskInfo.Mac = Mac
-	o.Insert(taskInfo)
+	TableSet := xmlquery.FindOne(node, "//TableSet[@id!='TaskLogin']")
+	info := models.NewTaskInfo(task.Uuid, com, TableSet, task.SerialNumber, task.Env, Mac)
+	_, _ = o.Insert(info)
 }
 
 func TaskHandlerUpdate(task Task.Task, Mac string, JsonFileName string) {
-	orm.Debug = false
 	o := orm.NewOrm()
 	_ = o.Using("default")
 
@@ -90,46 +63,27 @@ func TaskHandlerUpdate(task Task.Task, Mac string, JsonFileName string) {
 	if qc.Filter("TaxpayerId", Company.SelectElement("TaxpayerId").InnerText()).Exist() {
 		_ = qc.Filter("TaxpayerId", Company.SelectElement("TaxpayerId").InnerText()).One(com)
 	} else {
-		com.CompanyName = Company.SelectElement("CompanyName").InnerText()
-		com.TaxpayerId = Company.SelectElement("TaxpayerId").InnerText()
-		fmt.Println(o.Insert(com))
+		company := models.NewCompany(
+			Company.SelectElement("CompanyName").InnerText(),
+			Company.SelectElement("TaxpayerId").InnerText())
+		_, _ = o.Insert(company)
 	}
 
 	InputSet := xmlquery.Find(node, "//TableSet[@id='TaskLogin']/Param/Input")
 	for _, value := range InputSet {
 		if len(value.InnerText()) > 0 {
-			info := new(models.LoginInfo)
-			info.Company = com
-			info.Key = value.SelectAttr("id")
-			info.Value = value.InnerText()
-			fmt.Println(o.Insert(info))
+			_, _ = o.Insert(models.NewLoginInfo(com, value))
 		}
 	}
 
-	tlResult := xmlquery.FindOne(node, "//TableSet[@id='TaskLogin']/Result")
-	TableSet := xmlquery.FindOne(node, "//TableSet[@id!='TaskLogin']")
-
 	taskInfo := new(models.TaskInfo)
-	o.QueryTable(new(models.TaskInfo)).Filter("uuid", task.Uuid).One(taskInfo)
-	taskInfo.Company = com
-	taskInfo.LoginResult = tlResult.SelectElement("Code").InnerText()
-	taskInfo.LoginDesc = tlResult.SelectElement("Desc").InnerText()
-	taskInfo.TableSetID = TableSet.SelectAttr("id")
-	taskInfo.SsqType = TableSet.SelectAttr("ssqType")
-	taskInfo.Ssqs = TableSet.SelectAttr("ssqs")
-	taskInfo.Ssqz = TableSet.SelectAttr("ssqz")
-	taskInfo.Type = TableSet.SelectAttr("type")
-	taskInfo.Submit = TableSet.SelectAttr("submit")
-	tsResult := TableSet.SelectElement("Result")
-	taskInfo.TsResult = tsResult.SelectElement("Code").InnerText()
-	taskInfo.TsDesc = strings.Trim(tsResult.SelectElement("Desc").InnerText(), " \r\n")
-	taskInfo.Mac = Mac
-	taskInfo.Updated = time.Now()
-	taskInfo.TaskJson = JsonFileName
-	taskInfo.Env = task.Env
-	taskInfo.Message = task.Message
-	taskInfo.Status = task.Status
-	o.Update(taskInfo)
+	_ = o.QueryTable(new(models.TaskInfo)).Filter("uuid", task.Uuid).One(taskInfo)
+	taskInfo.UpdateData(
+		xmlquery.FindOne(node, "//TableSet[@id='TaskLogin']/Result"),
+		xmlquery.FindOne(node, "//TableSet[@id!='TaskLogin']/Result"),
+		JsonFileName, task.Message, task.Status)
+
+	_, _ = o.Update(taskInfo)
 }
 
 func CreateDateDir(basePath string, subPath string) string {
@@ -147,14 +101,11 @@ func CreateDateDir(basePath string, subPath string) string {
 }
 
 func SaveEx(Dir string, task Task.Task) string {
-	JsonParse := JsonEx.NewJsonStruct()
-	taskDir := Dir + "\\" + task.CA.TaxCode + "_" + task.Status + "_" + time.Now().Format("20060102T150405") + ".json"
-	fmt.Println(taskDir)
-
-	node, _ := xmlquery.Parse(strings.NewReader(task.Data))
-	TaskId := xmlquery.FindOne(node, "//TaskSet/Task/@id")
-	fmt.Println(TaskId.Attr)
-	JsonParse.Save(taskDir, task)
+	taskDir := Dir + "\\" + task.CA.TaxCode + "_" + task.Status + time.Now().Format("_20060102T150405.json")
+	// node, _ := xmlquery.Parse(strings.NewReader(task.Data))
+	//TaskId := xmlquery.FindOne(node, "//TaskSet/Task/@id")
+	//fmt.Println(TaskId.Attr)
+	JsonEx.NewJsonStruct().Save(taskDir, task)
 	return taskDir
 }
 
@@ -182,15 +133,14 @@ func (c *TaskController) Put() {
 }
 
 func Query(c *TaskController, currentDay time.Time) {
-	fmt.Println(currentDay.Format("2006-01-02 00:00:00")) // 打印结果：2017-04-11 12:52:52.794351777 +0800 CST
-	orm.Debug = false
+	// fmt.Println(currentDay.Format("2006-01-02 00:00:00")) // 打印结果：2017-04-11 12:52:52.794351777 +0800 CST
+	// orm.Debug = false
 	o := orm.NewOrm()
 	_ = o.Using("default")
 	var tasks []*models.TaskInfo
 	filter := o.QueryTable(new(models.TaskInfo)).Filter("created__gt", currentDay).OrderBy("-created").RelatedSel()
 	total, _ := filter.Count()
-	_, _ = filter.Limit(500).All(&tasks)
-	// fmt.Println(tasks)
+	_, _ = filter.Limit(100).All(&tasks)
 	c.Data["Website"] = "Auto Declare"
 	c.Data["total"] = total
 	c.Data["tasks"] = tasks
@@ -206,11 +156,9 @@ func QueryEx(c *TaskController, currentDay time.Time, TaxpayerId string) {
 	var tasks []*models.TaskInfo
 	_ = orm.NewOrm().QueryTable(new(models.Company)).Filter("TaxpayerId", TaxpayerId).One(&company)
 	filter := orm.NewOrm().QueryTable(new(models.TaskInfo)).Filter("Company", company.Id).Filter("created__gt", currentDay).OrderBy("-created").RelatedSel()
-	
-	// .RelatedSel().OrderBy("-created")
-	// filter := o.QueryTable(new(models.TaskInfo)).Filter("created__gt", currentDay).OrderBy("-created").RelatedSel()
+
 	total, _ := filter.Count()
-	_, _ = filter.Limit(500).All(&tasks)
+	_, _ = filter.Limit(100).All(&tasks)
 	c.Data["Website"] = "Auto Declare"
 	c.Data["total"] = total
 	c.Data["tasks"] = tasks

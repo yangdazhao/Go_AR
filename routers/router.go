@@ -4,6 +4,7 @@ import (
 	"github.com/astaxie/beego"
 	"go_AR/controllers"
 	"go_AR/controllers/Login"
+	"go_AR/controllers/Tracing"
 )
 
 func init() {
@@ -20,4 +21,6 @@ func init() {
 	beego.Router("/statistical/:TaskID", &controllers.StatisticalConroller{})
 	beego.Router("/statisticalEx/", &controllers.StatisticalConrollerEx{})
 	beego.Router("/USB/:USBOper", &controllers.USBController{})
+	beego.Router("/TaskQuery", &Tracing.TaskQueryController{})
+	beego.Router("/LogQuery", &Tracing.LogQueryController{})
 }
