@@ -109,7 +109,7 @@ func (c *StatisticalConroller) Post() {
 
 		var tasks []*models.TaskTaxpayer
 		filter := orm.NewOrm().QueryTable(new(models.TaskTaxpayer))
-		filter.OrderBy("TaskID").All(&tasks)
+		_, _ = filter.OrderBy("TaskID").All(&tasks)
 
 		// 预分配足够多的元素切片
 		srcData := make([]int64, len(tasks))

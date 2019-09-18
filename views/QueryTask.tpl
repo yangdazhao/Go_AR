@@ -46,7 +46,11 @@
 </div>
 
     <div class="footer">
-        <a src="https://pan.bigfintax.com/s/cWhi9cRYqg6W6rN">工具下载</a>
+        <ul>
+            
+            <li><a src="https://pan.bigfintax.com/s/cWhi9cRYqg6W6rN">工具下载</a></li>
+            <li><a src="https://pan.bigfintax.com/s/6Br7QanTKHRw74g">Python 环境部署</a></li>
+        </ul>
     </div>
 <script>
 function checknum(value) {
@@ -81,7 +85,8 @@ function QueryEx()
 }
 		
 function query(Params) {
-    $('#mytab').bootstrapTable({
+    $(`#mytab`).bootstrapTable("destroy");
+    $("#mytab").bootstrapTable({
         method: 'post',
         contentType: "application/json",//必须要有！！！！
         url: "TaskQuery",//要请求数据的文件路径
@@ -134,7 +139,7 @@ function query(Params) {
                 title: '状态',
                 field: 'Message',
                 align: 'center',
-				width: '40px',
+				width: '80px',
             },
             {
                 title: '详情',
@@ -154,7 +159,7 @@ function query(Params) {
 		if(value.length){
 		var uri = "https://cabinet.bigfintax.com/";
         uri += value;
-        return ['<a href="'+ uri +'">Json</a> | <a href="'+ uri +'">日志</a>'].join("")
+        return ['<a href="'+ uri +'"> Json</a> | <a href="'+ row. +  uri +'">日志</a>'].join("")
 		}
 		return "";
     }

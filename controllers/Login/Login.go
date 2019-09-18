@@ -1,14 +1,14 @@
-package controllers
+package Login
 
 import (
 	"github.com/astaxie/beego/orm"
 	"github.com/astaxie/beego/session"
-	"go_AR/controllers/Login"
+	"go_AR/controllers"
 	"go_AR/models"
 )
 
 type LoginControler struct {
-	Login.AuthController
+	AuthController
 }
 
 var globalSessions *session.Manager
@@ -44,7 +44,7 @@ func (c *LoginControler) Post() {
 			srcData[i] = tasks[i].Count
 			categories[i] = tasks[i].Name
 		}
-		data := &JSONS{categories, srcData, "任务数量", "2019年4月份任务数量"}
+		data := &controllers.JSONS{categories, srcData, "任务数量", "2019年4月份任务数量"}
 		c.Data["json"] = data
 	} else if param == "taxpayer" {
 		var tasks []*models.TaskTaxpayer
@@ -59,7 +59,7 @@ func (c *LoginControler) Post() {
 			srcData[i] = tasks[i].Count
 			categories[i] = tasks[i].Name
 		}
-		data := &JSONS{categories, srcData, "税号数量", "2019年4月份税号数量"}
+		data := &controllers.JSONS{categories, srcData, "税号数量", "2019年4月份税号数量"}
 		c.Data["json"] = data
 	}
 

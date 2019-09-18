@@ -1,4 +1,4 @@
-package controllers
+package USB
 
 import (
 	"bytes"
