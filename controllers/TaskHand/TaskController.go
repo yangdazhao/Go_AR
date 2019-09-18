@@ -57,9 +57,8 @@ func TaskHandlerUpdate(task Task.Task, Mac string, JsonFileName string) {
 	Company.SelectElement("CompanyName")
 	fmt.Printf("%v", Company.SelectElement("CompanyName").InnerText())
 
-	comEx := new(models.Company)
 	com := new(models.Company)
-	qc := o.QueryTable(comEx)
+	qc := o.QueryTable(new(models.Company))
 	if qc.Filter("TaxpayerId", Company.SelectElement("TaxpayerId").InnerText()).Exist() {
 		_ = qc.Filter("TaxpayerId", Company.SelectElement("TaxpayerId").InnerText()).One(com)
 	} else {

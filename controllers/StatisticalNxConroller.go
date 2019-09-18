@@ -17,7 +17,7 @@ func (c *StatisticalNxConroller) Post() {
 	}
 
 	jsonResult := make(map[string]interface{})
-	jsonResult["title"] = map[string]string{"subtext": "数据来自申报网关","text":"雨量流量关系图"}
+	jsonResult["title"] = map[string]string{"subtext": "数据来自申报网关", "text": "流量关系图"}
 	jsonResult["tooltip"] = map[string]string{"trigger": "axis"}
 	c.Data["json"] = jsonResult
 	c.ServeJSON()

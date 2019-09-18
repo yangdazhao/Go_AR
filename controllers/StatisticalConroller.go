@@ -104,9 +104,6 @@ func (c *StatisticalConroller) Post() {
 		`).QueryRow(&temp))
 
 		fmt.Println("TOTAL: ", temp)
-
-		////////////////////////////////////////////////////
-
 		var tasks []*models.TaskTaxpayer
 		filter := orm.NewOrm().QueryTable(new(models.TaskTaxpayer))
 		_, _ = filter.OrderBy("TaskID").All(&tasks)

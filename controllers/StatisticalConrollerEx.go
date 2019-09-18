@@ -107,8 +107,8 @@ func (c *StatisticalConrollerEx) Post() {
 
 func (c *StatisticalConrollerEx) Get() {
 	ope := c.Ctx.Input.Param(":TaskID")
-	c.Data["Website"] = "beego.me"
-	c.Data["Email"] = "yangdazhao@live.com"
+	c.Data["Website"] = Website
+	c.Data["Email"] = ZuoZheEmail
 	c.Data["Param"] = ope
 	c.TplName = "index.tpl"
 }

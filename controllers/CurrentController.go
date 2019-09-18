@@ -25,7 +25,7 @@ func QueryC(c *CurrentController, currentDay time.Time) {
 	c.Data["Website"] = "Auto Declare"
 	c.Data["total"] = total
 	c.Data["tasks"] = tasks
-	c.Data["Email"] = "yangdazhao@live.com"
+	c.Data["Email"] = ZuoZheEmail
 	c.TplName = "view.tpl"
 }
 
@@ -34,7 +34,6 @@ func (c *CurrentController) Get() {
 	t2 := time.Now().Month() // 月
 	t3 := time.Now().Day()   // 日
 	var currentDay time.Time
-
 	currentDay = time.Date(t1, t2, t3, 0, 0, 0, 0, time.Local) // 获取当前时间，返回当前时间Time
 	QueryC(c, currentDay)
 }

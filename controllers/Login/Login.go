@@ -62,18 +62,15 @@ func (c *LoginControler) Post() {
 		data := &controllers.JSONS{categories, srcData, "税号数量", "2019年4月份税号数量"}
 		c.Data["json"] = data
 	}
-
-	//c.SetSecureCookie()
-
 	c.ServeJSON()
 }
 
 func (this *LoginControler) Get() {
 	var _, _ = this.GetSecureCookie("asta", "dgid")
 	ope := this.Ctx.Input.Param(":TaskID")
-	this.Data["Website"] = "beego.me"
+	this.Data["Website"] = controllers.Website
 
-	this.Data["Email"] = "yangdazhao@live.com"
+	this.Data["Email"] = controllers.ZuoZheEmail
 	this.Data["Param"] = ope
 	this.TplName = "index.tpl"
 }

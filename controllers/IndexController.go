@@ -2,12 +2,12 @@ package controllers
 
 import (
 	"github.com/astaxie/beego/orm"
-    "go_AR/controllers/Login"
-    "go_AR/models"
+	"go_AR/controllers/Login"
+	"go_AR/models"
 )
 
 type IndexController struct {
-    Login.AuthController
+	Login.AuthController
 }
 
 type JSON3 struct {
@@ -57,9 +57,8 @@ func (c *IndexController) Post() {
 
 func (c *IndexController) Get() {
 	ope := c.Ctx.Input.Param(":TaskID")
-	c.Data["Website"] = "beego.me"
-
-	c.Data["Email"] = "yangdazhao@live.com"
+	c.Data["Website"] = Website
+	c.Data["Email"] = ZuoZheEmail
 	c.Data["Param"] = ope
 	c.TplName = "index.tpl"
 }
