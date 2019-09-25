@@ -52,7 +52,6 @@
 			},
 			series:  data.series
 		});
-		//alert(data.series);
 	});
         </script>	
 </body>

@@ -12,6 +12,10 @@ type StatisticalConroller struct {
 	Login.AuthController
 }
 
+func init(){
+
+}
+
 type JSONS struct {
 	Categories []string `json:"categories" `
 	Data       []int64  `json:"data" `
@@ -21,13 +25,11 @@ type JSONS struct {
 
 func (c *StatisticalConroller) Post() {
 	now := time.Now()
-
 	param := c.Ctx.Input.Param(":TaskID")
 
 	normal := map[string]interface{}{
 		"show":     true,
 		"position": "right",
-		//"color":  	"#f0f",
 	}
 
 	if param == "task" {
@@ -88,7 +90,6 @@ func (c *StatisticalConroller) Post() {
 		var temp Temp
 		// tasks []models.Tax_success
 		o := orm.NewOrm()
-		//var maps []orm.Params
 		fmt.Print(
 			o.Raw(`SELECT COUNT(1) as 'TOTAL' FROM (
 		SELECT

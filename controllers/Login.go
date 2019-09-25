@@ -1,14 +1,15 @@
-package Login
+package controllers
 
 import (
 	"github.com/astaxie/beego/orm"
 	"github.com/astaxie/beego/session"
-	"go_AR/controllers"
+	"go_AR/const"
+	"go_AR/controllers/Login"
 	"go_AR/models"
 )
 
 type LoginControler struct {
-	AuthController
+	Login.AuthController
 }
 
 var globalSessions *session.Manager
@@ -44,7 +45,7 @@ func (c *LoginControler) Post() {
 			srcData[i] = tasks[i].Count
 			categories[i] = tasks[i].Name
 		}
-		data := &controllers.JSONS{categories, srcData, "任务数量", "2019年4月份任务数量"}
+		data := &JSONS{categories, srcData, "任务数量", "2019年4月份任务数量"}
 		c.Data["json"] = data
 	} else if param == "taxpayer" {
 		var tasks []*models.TaskTaxpayer
@@ -59,7 +60,7 @@ func (c *LoginControler) Post() {
 			srcData[i] = tasks[i].Count
 			categories[i] = tasks[i].Name
 		}
-		data := &controllers.JSONS{categories, srcData, "税号数量", "2019年4月份税号数量"}
+		data := &JSONS{categories, srcData, "税号数量", "2019年4月份税号数量"}
 		c.Data["json"] = data
 	}
 	c.ServeJSON()
@@ -68,9 +69,9 @@ func (c *LoginControler) Post() {
 func (this *LoginControler) Get() {
 	var _, _ = this.GetSecureCookie("asta", "dgid")
 	ope := this.Ctx.Input.Param(":TaskID")
-	this.Data["Website"] = controllers.Website
+	this.Data["Website"] = _const.Website
 
-	this.Data["Email"] = controllers.ZuoZheEmail
+	this.Data["Email"] = _const.ZuoZheEmail
 	this.Data["Param"] = ope
 	this.TplName = "index.tpl"
 }

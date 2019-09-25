@@ -1,4 +1,4 @@
-package controllers
+package _const
 
 const (
 	ZuoZheEmail string = "yangdazhao@live.com"

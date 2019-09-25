@@ -44,14 +44,8 @@
     </form>
     <table id="mytab" class="table table-hover"></table>
 </div>
+{{template "footer.html" .}}
 
-    <div class="footer">
-        <ul>
-            
-            <li><a src="https://pan.bigfintax.com/s/cWhi9cRYqg6W6rN">工具下载</a></li>
-            <li><a src="https://pan.bigfintax.com/s/6Br7QanTKHRw74g">Python 环境部署</a></li>
-        </ul>
-    </div>
 <script>
 function checknum(value) {
     var Regx = /^[A-Za-z0-9]*$/;
@@ -83,9 +77,9 @@ function QueryEx()
 		query({"taxpayerid":KeyWord});
 	}
 }
-		
+
 function query(Params) {
-    $(`#mytab`).bootstrapTable("destroy");
+    $("#mytab").bootstrapTable("destroy");
     $("#mytab").bootstrapTable({
         method: 'post',
         contentType: "application/json",//必须要有！！！！
@@ -101,8 +95,6 @@ function query(Params) {
         queryParamsType: 'limit',//查询参数组织方式
         queryParams: Params,//请求服务器时所传的参数
         sidePagination: 'server',//指定服务器端分页
-        pageSize: 10,//单页记录数
-        pageList: [5, 10, 20, 30],//分页步进值
         showRefresh: false,//刷新按钮
         showColumns: true,
         clickToSelect: true,//是否启用点击选中行
@@ -114,12 +106,10 @@ function query(Params) {
                 title: '序列号',
                 field: 'SerialNumber',
                 width: '100px',
-                //sortable: true
             },
             {
                 title: '公司名',
                 field: 'Company.CompanyName',
-                //sortable: true
             },
             {
                 title: '税种id',
@@ -159,7 +149,7 @@ function query(Params) {
 		if(value.length){
 		var uri = "https://cabinet.bigfintax.com/";
         uri += value;
-        return ['<a href="'+ uri +'"> Json</a> | <a href="'+ row. +  uri +'">日志</a>'].join("")
+        return ['<a href="'+ uri +'"> Json</a> | <a href="'+ uri +'">日志</a>'].join("")
 		}
 		return "";
     }

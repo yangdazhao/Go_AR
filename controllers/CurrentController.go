@@ -3,6 +3,7 @@ package controllers
 import (
 	"fmt"
 	"github.com/astaxie/beego/orm"
+	"go_AR/const"
 	"go_AR/controllers/Login"
 	"go_AR/models"
 	"time"
@@ -25,7 +26,7 @@ func QueryC(c *CurrentController, currentDay time.Time) {
 	c.Data["Website"] = "Auto Declare"
 	c.Data["total"] = total
 	c.Data["tasks"] = tasks
-	c.Data["Email"] = ZuoZheEmail
+	c.Data["Email"] = _const.ZuoZheEmail
 	c.TplName = "view.tpl"
 }
 

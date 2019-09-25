@@ -49,7 +49,7 @@ type Company struct {
 	CompanyName string `json:"CompanyName"     orm:"column(CompanyName)"`
 }
 
-func NewCompanyEx(company *Node) *Company {
+func NewCompanyEx(company * xmlquery.Node) *Company {
 	return &Company{
 		TaxpayerId:  company.SelectElement("TaxpayerId").InnerText(),
 		CompanyName: company.SelectElement("CompanyName").InnerText(),
@@ -71,7 +71,7 @@ type LoginInfo struct {
 	Value   string   `json:"Value"           orm:"column(Value)"`
 }
 
-func NewLoginInfo(company *Company, input *Node) *LoginInfo {
+func NewLoginInfo(company *Company, input *xmlquery.Node) *LoginInfo {
 	return &LoginInfo{Company: company, Key: input.SelectAttr("id"), Value: input.InnerText()}
 }
 

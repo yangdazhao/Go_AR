@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"github.com/astaxie/beego/orm"
+	"go_AR/const"
 	"go_AR/controllers/Login"
 	"go_AR/models"
 )
@@ -107,8 +108,8 @@ func (c *StatisticalConrollerEx) Post() {
 
 func (c *StatisticalConrollerEx) Get() {
 	ope := c.Ctx.Input.Param(":TaskID")
-	c.Data["Website"] = Website
-	c.Data["Email"] = ZuoZheEmail
+	c.Data["Website"] = _const.Website
+	c.Data["Email"] = _const.ZuoZheEmail
 	c.Data["Param"] = ope
 	c.TplName = "index.tpl"
 }

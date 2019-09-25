@@ -8,6 +8,7 @@ import (
 	"github.com/antchfx/xmlquery"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
+	"github.com/hashicorp/consul/api"
 	"go_AR/models"
 	"os"
 	"path/filepath"
@@ -17,18 +18,16 @@ import (
 
 type TaskController struct {
 	beego.Controller
-	// AuthController
 }
 
 //TaskHandler
 func TaskHandler(task Task.Task, Mac string) {
+	fmt.Println(Mac)
 	o := orm.NewOrm()
 	_ = o.Using("default")
 
 	node, _ := xmlquery.Parse(strings.NewReader(task.Data))
 	_Comp := xmlquery.FindOne(node, "//TaskSet/CompanyInfo")
-	fmt.Printf("%v", _Comp.SelectElement("CompanyName").InnerText())
-
 	com := new(models.Company)
 	qc := o.QueryTable(new(models.Company))
 	if qc.Filter("TaxpayerId", _Comp.SelectElement("TaxpayerId").InnerText()).Exist() {
@@ -46,9 +45,29 @@ func TaskHandler(task Task.Task, Mac string) {
 	TableSet := xmlquery.FindOne(node, "//TableSet[@id!='TaskLogin']")
 	info := models.NewTaskInfo(task.Uuid, com, TableSet, task.SerialNumber, task.Env, Mac)
 	_, _ = o.Insert(info)
+	/////////////////////////////////////////////////////////////////////////////
+	dConfig := api.DefaultConfig()
+	dConfig.Address = "https://cabinet.bigfintax.com"
+	client, _ := api.NewClient(dConfig)
+	kv := client.KV()
+
+	TaskParam := map[string]string{}
+	TaskParam["Time"] = time.Now().Format("20060102T150405")
+	TaskParam["TaxpayerId"] = _Comp.SelectElement("TaxpayerId").InnerText()
+	TaskParam["TableSetId"] = TableSet.SelectAttr("id")
+	TaskParam["TaskType"] = TableSet.SelectAttr("type")
+
+	b, _ := json.Marshal(TaskParam)
+	_, _ = kv.Put(&api.KVPair{Key: "Task/" + Mac, Flags: 0, Value: b}, nil)
 }
 
 func TaskHandlerUpdate(task Task.Task, Mac string, JsonFileName string) {
+	dConfig := api.DefaultConfig()
+	dConfig.Address = "https://cabinet.bigfintax.com"
+	client, _ := api.NewClient(dConfig)
+	kv := client.KV()
+	_, _ = kv.Delete("Task/"+Mac, nil)
+	///////////////////////////////////////////////////////////////////
 	o := orm.NewOrm()
 	_ = o.Using("default")
 
@@ -110,6 +129,7 @@ func SaveEx(Dir string, task Task.Task) string {
 
 func (c *TaskController) Post() {
 	ope := c.Ctx.Input.Param(":Mac")
+	fmt.Println(ope)
 	var task Task.Task
 	if json.Unmarshal(c.Ctx.Input.RequestBody, &task) == nil {
 		TaskHandler(task, ope)
@@ -132,8 +152,6 @@ func (c *TaskController) Put() {
 }
 
 func Query(c *TaskController, currentDay time.Time) {
-	// fmt.Println(currentDay.Format("2006-01-02 00:00:00")) // 打印结果：2017-04-11 12:52:52.794351777 +0800 CST
-	// orm.Debug = false
 	o := orm.NewOrm()
 	_ = o.Using("default")
 	var tasks []*models.TaskInfo
@@ -170,12 +188,12 @@ func (c *TaskController) Get() {
 	fmt.Print(taskid)
 	ope := c.Ctx.Input.Param(":Time")
 	TaxpayerId := c.Ctx.Input.Param(":TaxpayerId")
-	t1 := time.Now().Year()  // 年
-	t2 := time.Now().Month() // 月
-	t3 := time.Now().Day()   // 日
+	//me.Now().
+	t1 := time.Now().Year()  	// 年
+	t2 := time.Now().Month() 	// 月
+	t3 := time.Now().Day()   	// 日
 	var currentDay time.Time
 	if len(taskid) != 0 {
-		fmt.Println(currentDay.Format("2006-01-02 00:00:00")) // 打印结果：2017-04-11 12:52:52.794351777 +0800 CST
 		orm.Debug = false
 		o := orm.NewOrm()
 		_ = o.Using("default")

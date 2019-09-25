@@ -3,6 +3,7 @@ package controllers
 import (
 	"fmt"
 	"github.com/astaxie/beego/orm"
+	"go_AR/const"
 	"go_AR/controllers/Login"
 	"go_AR/models"
 )
@@ -25,6 +26,6 @@ func (c *CompanyController) Get() {
 	_, _ = o.QueryTable(new(models.Company)).All(&users)
 	c.Data["Website"] = "Auto Declare"
 	c.Data["buffer"] = users
-	c.Data["Email"] = ZuoZheEmail
+	c.Data["Email"] = _const.ZuoZheEmail
 	c.TplName = "task.tpl"
 }
