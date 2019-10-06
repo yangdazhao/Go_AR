@@ -146,7 +146,8 @@
                 tt.setOption(data);
                 tt.on('click', function (params) {
                     console.log(params.name);
-                });
+                }
+        );
             }
         );
     }

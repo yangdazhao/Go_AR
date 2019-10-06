@@ -42,8 +42,10 @@
                 queryParamsType: 'limit',//查询参数组织方式
                 queryParams: "",//请求服务器时所传的参数
                 sidePagination: 'server',//指定服务器端分页
-                showRefresh: false,//刷新按钮
+                showRefresh: true,//刷新按钮
                 showColumns: true,
+                sortable:   true,                       //是否启用排序
+                sortOrder: "asc",                       //排序方式
                 clickToSelect: true,//是否启用点击选中行
                 toolbarAlign: 'right',//工具栏对齐方式
                 buttonsAlign: 'right',//按钮对齐方式
