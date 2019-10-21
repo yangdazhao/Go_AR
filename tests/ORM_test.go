@@ -2,9 +2,6 @@ package test
 
 import (
 	"encoding/json"
-	"fmt"
-	"github.com/astaxie/beego/orm"
-	"go_AR/models"
 	"testing"
 )
 
