@@ -3,21 +3,22 @@ package controllers
 import (
 	"fmt"
 	"github.com/astaxie/beego/orm"
-    "go_AR/controllers/Login"
-    "go_AR/models"
+	_const "go_AR/const"
+	"go_AR/controllers/Login"
+	"go_AR/models"
 )
 
 type MainController struct {
-    Login.AuthController
+	Login.AuthController
 }
 
 func (c *MainController) Get() {
 	c.Data["Website"] = "beego.me"
-	c.Data["Email"] = "yangdazhao@live.com"
+	c.Data["Email"] = _const.ZuoZheEmail
 	c.TplName = "echarts.tpl"
 }
 
-func QueryInfoByGroup(Group string, Type string)[]models.TaxSuccess {
+func QueryInfoByGroup(Group string, Type string) []models.TaxSuccess {
 	var tasks []models.TaxSuccess
 	// tasks []models.Tax_success
 	o := orm.NewOrm()
@@ -119,8 +120,8 @@ GROUP BY
 	LEFT ( t2.TaskID, 4 ) 
 ORDER BY
 	t3.taxid
-` , Type ,Group).QueryRows(&tasks)
-//` , Type ,Group).QueryRows(&tasks)
+`, Type, Group).QueryRows(&tasks)
+	//` , Type ,Group).QueryRows(&tasks)
 	if err == nil {
 		fmt.Println("user nums: ", num)
 	}

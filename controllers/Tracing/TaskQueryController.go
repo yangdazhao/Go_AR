@@ -14,6 +14,10 @@ type TaskQueryController struct {
 	// AuthController
 }
 
+func init() {
+	orm.Debug = false
+}
+
 type QueryParam struct {
 	CompanyName  string `json:"companyname"`
 	TaxpayerId   string `json:"taxpayerid"`
@@ -22,8 +26,6 @@ type QueryParam struct {
 }
 
 func QueryByCompanyName(param QueryParam) []*models.TaskInfo {
-	fmt.Println(param)
-	orm.Debug = false
 	var company models.Company
 	var tasks []*models.TaskInfo
 	var table orm.QuerySeter
@@ -51,19 +53,21 @@ func QueryByCompanyName(param QueryParam) []*models.TaskInfo {
 		table = table.Filter("SerialNumber", param.SerialNumber)
 	}
 
-	_, _ = table.RelatedSel().Limit(100).All(&tasks)
-	fmt.Println(len(tasks))
-	fmt.Println(tasks[0])
+	_, err := table.RelatedSel().Limit(100).All(&tasks)
+	if err != nil {
+
+	}
 	return tasks
 }
 
 func (c *TaskQueryController) Post() {
-	fmt.Println("TaskQueryController.Post")
 	bBody, _ := ioutil.ReadAll(c.Ctx.Request.Body)
-	fmt.Println(string(bBody))
-	var qParam QueryParam
-	_ = json.Unmarshal(bBody, &qParam)
-	c.Data["json"] = QueryByCompanyName(qParam)
+	var p QueryParam
+	err := json.Unmarshal(bBody, &p)
+	if err != nil {
+
+	}
+	c.Data["json"] = QueryByCompanyName(p)
 	c.ServeJSON()
 }
 

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/hashicorp/consul/api"
+	_const "go_AR/const"
 )
 
 type MachineController struct {
@@ -55,7 +56,7 @@ func (c *MachineController) Post() {
 
 func (c *MachineController) Get() {
 	c.Data["Website"] = "beego.me"
-	c.Data["Email"] = "yangdazhao@live.com"
+	c.Data["Email"] = _const.ZuoZheEmail
 	// c.Data["Param"] = ope
 	c.TplName = "MachineView.tpl"
 }

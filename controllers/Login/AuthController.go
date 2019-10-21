@@ -2,15 +2,26 @@ package Login
 
 import (
 	"fmt"
-	"github.com/astaxie/beego"
+	. "github.com/astaxie/beego"
+	"log"
 )
 
 // SESSION_USER_KEY
 const SessionUserKey string = "bgsessionID"
 
 type AuthController struct {
-	beego.Controller
+	Controller
 	isLogin bool
+}
+
+type User struct {
+	Username string
+	Password string
+}
+
+//退出
+type LogoutController struct {
+	Controller
 }
 
 func (c *AuthController) Prepare() {
@@ -29,19 +40,11 @@ func (c *AuthController) Prepare() {
 func (c *AuthController) Login() {
 	name := c.Ctx.GetCookie("name")
 	if name == "12364" {
-
 		c.Ctx.Redirect(302, "/statisticalEx")
 	} else {
-		//
 		c.Data["Email"] = "yangdazhao@live.com"
-		// c.Data["Param"] = ope
 		c.TplName = "login.tpl"
 	}
-}
-
-type User struct {
-	Username string
-	Password string
 }
 
 func (c *AuthController) PostData() {
@@ -52,16 +55,8 @@ func (c *AuthController) PostData() {
 	if err := c.ParseForm(&u); err != nil {
 
 	}
-	//c.Ctx.SetCookie("name", u.Username, 100, "/")  // 设置cookie
-	//c.Ctx.SetCookie("name", u.Username, 100, "/")  // 设置cookie
-	//c.Ctx.SetCookie("password", u.Password, 100, "/")  // 设置cookie
 	c.SetSession(SessionUserKey, u)
 	c.Ctx.Redirect(302, "/index")
-}
-
-//退出
-type LogoutController struct {
-	beego.Controller
 }
 
 //登录退出功能
@@ -74,9 +69,7 @@ func (c *LogoutController) Logout() {
 		//销毁全部的session
 		c.DestroySession()
 		isLogin = true
-
-		fmt.Println("当前的session:")
-		fmt.Println(c.CruSession)
+		log.Fatalf("当前的session: %v", c.CruSession)
 	}
 	c.Data["json"] = map[string]interface{}{"islogin": isLogin}
 	c.ServeJSON()

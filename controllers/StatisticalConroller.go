@@ -3,6 +3,7 @@ package controllers
 import (
 	"fmt"
 	"github.com/astaxie/beego/orm"
+	_const "go_AR/const"
 	"go_AR/controllers/Login"
 	"go_AR/models"
 	"time"
@@ -12,7 +13,7 @@ type StatisticalConroller struct {
 	Login.AuthController
 }
 
-func init(){
+func init() {
 
 }
 
@@ -160,7 +161,7 @@ func (c *StatisticalConroller) Post() {
 func (c *StatisticalConroller) Get() {
 	ope := c.Ctx.Input.Param(":TaskID")
 	c.Data["Website"] = "beego.me"
-	c.Data["Email"] = "yangdazhao@live.com"
+	c.Data["Email"] = _const.ZuoZheEmail
 	c.Data["Param"] = ope
 	c.TplName = "echarts.tpl"
 }

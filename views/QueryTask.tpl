@@ -88,8 +88,8 @@ function query(Params) {
         toolbar: '#toolbar',//指定工具栏
         striped: true, //是否显示行间隔色
         dataField: "res",//bootstrap table 可以前端分页也可以后端分页，这里
-        //我们使用的是后端分页，后端分页时需返回含有total：总记录数,这个键值好像是固定的
-        //rows： 记录集合 键值可以修改  dataField 自己定义成自己想要的就好
+                        //我们使用的是后端分页，后端分页时需返回含有total：总记录数,这个键值好像是固定的
+                        //rows： 记录集合 键值可以修改  dataField 自己定义成自己想要的就好
         pageNumber: 1, //初始化加载第一页，默认第一页
         pagination: true,//是否分页
         queryParamsType: 'limit',//查询参数组织方式
@@ -100,43 +100,14 @@ function query(Params) {
         clickToSelect: true,//是否启用点击选中行
         toolbarAlign: 'right',//工具栏对齐方式
         buttonsAlign: 'right',//按钮对齐方式
-        toolbar: '#toolbar',//指定工作栏
         columns: [
-            {
-                title: '序列号',
-                field: 'SerialNumber',
-                width: '100px',
-            },
-            {
-                title: '公司名',
-                field: 'Company.CompanyName',
-            },
-            {
-                title: '税种id',
-                field: 'TableSetID',
-            },
-            {
-                title: '开始时间',
-                field: 'Created',
-                width: '200px',
-            },
-            {
-                title: '任务类型',
-                field: 'Type',
-                width: '40px',
-            },
-            {
-                title: '状态',
-                field: 'Message',
-                align: 'center',
-				width: '80px',
-            },
-            {
-                title: '详情',
-                field: 'TaskJson',
-                align: 'center',
-                formatter: aFormatter //添加超链接的方法
-            }
+            {title: '序列号',field: 'SerialNumber',width: '100px',},
+            {title: '公司名',field: 'Company.CompanyName',},
+            {title: '税种id',field: 'TableSetID',},
+            {title: '开始时间',field: 'Created',width: '200px',},
+            {title: '任务类型',field: 'Type',width: '40px',},
+            {title: '状态',field: 'Message',align: 'center',width: '80px',},
+            {title: '详情',field: 'TaskJson',align: 'center',formatter: aFormatter /**添加超链接的方法 */}
         ],
         locale: 'zh-CN',//中文支持,
         responseHandler: function (res) {    //在ajax获取到数据，渲染表格之前，修改数据源
