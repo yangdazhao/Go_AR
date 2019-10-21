@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
+	"github.com/yangdazhao/usbip"
 	"go_AR/models"
 	"golang.org/x/text/encoding/simplifiedchinese"
 	"strconv"
-	"usbip"
 )
 
 type USBController struct {
