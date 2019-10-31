@@ -1,3 +1,3 @@
 # Go_AR
 
-AutoDeclare
+AutomaticReporting
