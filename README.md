@@ -1,0 +1,3 @@
+# Go_AR
+
+AutoDeclare
